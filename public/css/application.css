@@ -7,8 +7,15 @@
 }
 
 #map-canvas {
-  height: 500px;
-  width: 500px;
-  margin: 0;
+  height: 450px;
+  width: 450px;
+  margin: auto;
   padding: 0;
+}
+
+.search-form {
+  background-color: #d1e5e1;
+  border: 1px solid gray;
+  margin: 10px auto;
+  width: 300px;
 }
