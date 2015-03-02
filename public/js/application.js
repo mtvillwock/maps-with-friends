@@ -26,7 +26,8 @@ function initialize(location) {
     new google.maps.LatLng(45.250434, -69.377900));
 
   var options = {
-    bounds: defaultBounds
+    bounds: defaultBounds,
+    types: ['(cities)']
   };
 
   var input = document.getElementById('search');
@@ -36,26 +37,35 @@ function initialize(location) {
 
   function fillInAddress() {
   // Get the place details from the autocomplete object.
-  var place = autocomplete.getPlace();
+    var place = autocomplete.getPlace();
 
-  for (var component in componentForm) {
-    document.getElementById(component).value = '';
-    document.getElementById(component).disabled = false;
-  }
+    for (var component in componentForm) {
+      document.getElementById(component).value = '';
+      document.getElementById(component).disabled = false;
+    }
 
-  // Get each component of the address from the place details
-  // and fill the corresponding field on the form.
-  for (var i = 0; i < place.address_components.length; i++) {
-    var addressType = place.address_components[i].types[0];
-    if (componentForm[addressType]) {
-      var val = place.address_components[i][componentForm[addressType]];
-      document.getElementById(addressType).value = val;
+    // Get each component of the address from the place details
+    // and fill the corresponding field on the form.
+    for (var i = 0; i < place.address_components.length; i++) {
+      var addressType = place.address_components[i].types[0];
+      if (componentForm[addressType]) {
+        var val = place.address_components[i][componentForm[addressType]];
+        document.getElementById(addressType).value = val;
+      }
     }
   }
-}
-
 
 };
+
+
+var request = $.ajax({
+  url: url,
+  type: "POST"
+})
+
+request.done(function() {
+  console.log("it worked!");
+})
 
 // google.maps.event.addDomListener(window, 'load', initialize);
 
