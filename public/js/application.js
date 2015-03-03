@@ -84,7 +84,6 @@ function initialize(location) {
 var codeAddress = function(location) {
     var address = document.getElementById("address").value;
     console.log("in codeAddress, address = " + address, " and location is: " + location);
-    debugger;
     var geocoder = new google.maps.Geocoder();
 
     var currentLocation = new google.maps.LatLng(location.coords.latitude, location.coords.longitude)
@@ -100,12 +99,15 @@ var codeAddress = function(location) {
     var map = new google.maps.Map(mapCanvas, mapOptions);
 
     geocoder.geocode( { 'address': address}, function(results, status) {
+      debugger;
       if (status == google.maps.GeocoderStatus.OK) {
         map.setCenter(results[0].geometry.location);
         var marker = new google.maps.Marker({
             map: map,
             position: results[0].geometry.location
+            // I think I need to reference location.D and location.k for Lat/Long respectively
         });
+        marker.setMap(map);
       } else {
         alert("Geocode was not successful for the following reason: " + status);
       }
