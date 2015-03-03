@@ -23,5 +23,5 @@ get '/locations' do
   @users.each do |user, location|
     users_and_locations[user.name] = user.location
   end
-  p users_and_locations.to_json
+  users_and_locations.to_json
 end

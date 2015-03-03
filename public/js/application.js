@@ -1,15 +1,5 @@
 $(document).ready(function() {
-
-  var populateLocations = function() {
-    var request = $.ajax({
-      type: 'GET',
-      url: '/locations'
-    });
-
-    request.done(function(data){
-        console.log("in callback ajax. data = " + data);
-    });
-  }
+  var map;
 
   navigator.geolocation.getCurrentPosition(initialize);
 
@@ -27,7 +17,7 @@ $(document).ready(function() {
 
     request.done(function(data){
         console.log("in ajax success. data = " + data);
-        navigator.geolocation.getCurrentPosition(codeAddress);
+        navigator.geolocation.getCurrentPosition(codeAddress());
     });
 
   })
@@ -46,7 +36,7 @@ function initialize(location) {
     mapTypeId: google.maps.MapTypeId.ROADMAP
   }
 
-  var map = new google.maps.Map(mapCanvas, mapOptions);
+  map = new google.maps.Map(mapCanvas, mapOptions);
 
   var marker = new google.maps.Marker({
     position: currentLocation,
@@ -88,8 +78,6 @@ function initialize(location) {
     }
   }
 
-  populateLocations();
-
 };
 
 
@@ -98,18 +86,6 @@ var codeAddress = function(location) {
     var address = document.getElementById("address").value;
     console.log("in codeAddress, address = " + address, " and location is: " + location);
     var geocoder = new google.maps.Geocoder();
-
-    var currentLocation = new google.maps.LatLng(location.coords.latitude, location.coords.longitude)
-
-    var mapCanvas = document.getElementById('map-canvas');
-
-    var mapOptions = {
-      center: currentLocation,
-      zoom: 5,
-      mapTypeId: google.maps.MapTypeId.ROADMAP
-    }
-
-    var map = new google.maps.Map(mapCanvas, mapOptions);
 
     geocoder.geocode( { 'address': address}, function(results, status) {
       debugger;
@@ -125,7 +101,5 @@ var codeAddress = function(location) {
         alert("Geocode was not successful for the following reason: " + status);
       }
     });
-
-    populateLocations();
 
   }
