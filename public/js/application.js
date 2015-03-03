@@ -5,13 +5,15 @@ $(document).ready(function() {
   $('.search-form').on('submit', function(e){
     e.preventDefault();
 
-    $.ajax({
+    var data = $(e.target).serialize();
+
+    var request = $.ajax({
       type: 'POST',
       url: '/',
+      data: data,
       success: function(resp) {
-        debugger;
-        console.log("success!");
-        codeAddress();
+        console.log("in ajax success. response = " + resp);
+        navigator.geolocation.getCurrentPosition(codeAddress);
       },
       error: function() {
         console.log("something wrong in the AJAX call");
@@ -79,10 +81,13 @@ function initialize(location) {
 
 
 // Converts human-readable address into Geolocation ?? and makes marker??
-var codeAddress = function() {
+var codeAddress = function(location) {
     var address = document.getElementById("address").value;
-
+    console.log("in codeAddress, address = " + address, " and location is: " + location);
+    debugger;
     var geocoder = new google.maps.Geocoder();
+
+    var currentLocation = new google.maps.LatLng(location.coords.latitude, location.coords.longitude)
 
     var mapCanvas = document.getElementById('map-canvas');
 
