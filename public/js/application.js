@@ -1,10 +1,28 @@
 $(document).ready(function() {
+
   navigator.geolocation.getCurrentPosition(initialize);
 
+  $('.search-form').on('submit', function(e){
+    e.preventDefault();
+
+    $.ajax({
+      type: 'POST',
+      url: '/',
+      success: function(resp) {
+        debugger;
+        console.log("success!");
+        codeAddress();
+      },
+      error: function() {
+        console.log("something wrong in the AJAX call");
+      }
+    });
+  })
 
 });
 
 function initialize(location) {
+
   var currentLocation = new google.maps.LatLng(location.coords.latitude, location.coords.longitude)
 
   var mapCanvas = document.getElementById('map-canvas');
@@ -14,6 +32,7 @@ function initialize(location) {
     zoom: 5,
     mapTypeId: google.maps.MapTypeId.ROADMAP
   }
+
   var map = new google.maps.Map(mapCanvas, mapOptions);
 
   var marker = new google.maps.Marker({
@@ -30,8 +49,9 @@ function initialize(location) {
     types: ['(cities)']
   };
 
-  var input = document.getElementById('search');
-  // map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+
+// Search Form
+  var input = document.getElementById('address');
 
   var autocomplete = new google.maps.places.Autocomplete(input, options);
 
@@ -58,14 +78,31 @@ function initialize(location) {
 };
 
 
-var request = $.ajax({
-  url: url,
-  type: "POST"
-})
+// Converts human-readable address into Geolocation ?? and makes marker??
+var codeAddress = function() {
+    var address = document.getElementById("address").value;
 
-request.done(function() {
-  console.log("it worked!");
-})
+    var geocoder = new google.maps.Geocoder();
 
-// google.maps.event.addDomListener(window, 'load', initialize);
+    var mapCanvas = document.getElementById('map-canvas');
 
+    var mapOptions = {
+      center: currentLocation,
+      zoom: 5,
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    }
+
+    var map = new google.maps.Map(mapCanvas, mapOptions);
+
+    geocoder.geocode( { 'address': address}, function(results, status) {
+      if (status == google.maps.GeocoderStatus.OK) {
+        map.setCenter(results[0].geometry.location);
+        var marker = new google.maps.Marker({
+            map: map,
+            position: results[0].geometry.location
+        });
+      } else {
+        alert("Geocode was not successful for the following reason: " + status);
+      }
+    });
+  }
