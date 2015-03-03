@@ -11,14 +11,14 @@ $(document).ready(function() {
       type: 'POST',
       url: '/',
       data: data,
-      success: function(resp) {
-        console.log("in ajax success. response = " + resp);
-        navigator.geolocation.getCurrentPosition(codeAddress);
-      },
-      error: function() {
-        console.log("something wrong in the AJAX call");
-      }
+      dataType: 'json'
     });
+
+    request.done(function(data){
+        console.log("in ajax success. data = " + data);
+        navigator.geolocation.getCurrentPosition(codeAddress);
+    });
+
   })
 
 });
