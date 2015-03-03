@@ -1,5 +1,16 @@
 $(document).ready(function() {
 
+  var populateLocations = function() {
+    var request = $.ajax({
+      type: 'GET',
+      url: '/locations'
+    });
+
+    request.done(function(data){
+        console.log("in callback ajax. data = " + data);
+    });
+  }
+
   navigator.geolocation.getCurrentPosition(initialize);
 
   $('.search-form').on('submit', function(e){
@@ -24,7 +35,7 @@ $(document).ready(function() {
 });
 
 function initialize(location) {
-
+  // Create the map
   var currentLocation = new google.maps.LatLng(location.coords.latitude, location.coords.longitude)
 
   var mapCanvas = document.getElementById('map-canvas');
@@ -77,6 +88,8 @@ function initialize(location) {
     }
   }
 
+  populateLocations();
+
 };
 
 
@@ -104,12 +117,15 @@ var codeAddress = function(location) {
         map.setCenter(results[0].geometry.location);
         var marker = new google.maps.Marker({
             map: map,
-            position: results[0].geometry.location
+            position: results[0].geometry.location,
+            title: "This is where you are"
             // I think I need to reference location.D and location.k for Lat/Long respectively
         });
-        marker.setMap(map);
       } else {
         alert("Geocode was not successful for the following reason: " + status);
       }
     });
+
+    populateLocations();
+
   }
