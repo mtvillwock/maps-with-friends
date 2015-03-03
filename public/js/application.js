@@ -1,12 +1,10 @@
 $(document).ready(function() {
-  var map;
-
+  var map; // declaring map globally for later
   navigator.geolocation.getCurrentPosition(initialize);
-
+  // finds user's current position and creates map and marker showing them
   $('.search-form').on('submit', function(e){
     addNewMarker(e);
   })
-
 });
 
 function initialize(location) {
@@ -17,9 +15,6 @@ function initialize(location) {
   // Add database locations to map
   // populateLocations();
 };
-
-
-
 
 // Adds marker to map
 function addNewMarker(e){
@@ -36,12 +31,12 @@ function addNewMarker(e){
 
   request.done(function(data){
     console.log("in ajax success. data = " + data);
-        // This line makes the new marker
-        navigator.geolocation.getCurrentPosition(codeAddress);
-      });
+    navigator.geolocation.getCurrentPosition(codeAddress);
+    // Makes the new marker based on address in form submission
+  });
 }
 
-// Creates a new map
+// Creates a initial map with marker location of current user
 function createMapWithUserMarker(location){
   var currentLocation = new google.maps.LatLng(location.coords.latitude, location.coords.longitude)
 
@@ -61,6 +56,7 @@ function createMapWithUserMarker(location){
   });
 }
 
+// Defines search form based on Places library, biases LatLong bounds
 function setUpAutocompleteForm(){
   var defaultBounds = new google.maps.LatLngBounds(
     new google.maps.LatLng(33.695441, -117.805632),
