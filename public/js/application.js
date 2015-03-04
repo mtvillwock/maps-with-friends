@@ -10,13 +10,10 @@ $(document).ready(function() {
 function initialize(location) {
   // Create the map
   createMapWithUserMarker(location);
-  console.log("map initialized with your location");
   // Initialize autocomplete form
   setUpAutocompleteForm();
-  console.log("search bar ready to use Places autocomplete");
   // Add database locations to map
   populateLocations();
-  console.log("calling server to populate locations from DB");
 };
 
 // Adds marker to map
@@ -33,7 +30,6 @@ function addNewMarker(e){
   });
 
   request.done(function(data){
-    console.log("in addNewMarker.done function data = " + data);
     navigator.geolocation.getCurrentPosition(codeAddress);
     // Makes the new marker based on address in form submission
   });
