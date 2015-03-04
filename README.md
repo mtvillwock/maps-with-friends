@@ -1,4 +1,6 @@
 # Maps with Friends
+Status: Pending.
+Bare minimum MVP is working (you can find your location, add markers for friends, and markers are loaded based on friends in your database).
 
 ## About
 Life has a way of scattering friends all over the place.
