@@ -145,7 +145,6 @@ function populateLocations() {
 
   request.done(function(data){
     for (var i = 0; i < data.length; i++) {
-      console.log("in populateLocations for loop, making marker for " + data[i].name);
       addMarkerFromDatabase(data[i].city);
     };
   });
