@@ -18,10 +18,11 @@ end
 
 get '/locations' do
   @users = User.all
-  users_and_locations = {}
+  users_and_locations = []
   content_type :json
   @users.each do |user, location|
-    users_and_locations[user.name] = user.location
+    friend = {name: user.name, city: user.location}
+    users_and_locations << friend
   end
   users_and_locations.to_json
 end

@@ -10,10 +10,13 @@ $(document).ready(function() {
 function initialize(location) {
   // Create the map
   createMapWithUserMarker(location);
+  console.log("map initialized with your location");
   // Initialize autocomplete form
   setUpAutocompleteForm();
+  console.log("search bar ready to use Places autocomplete");
   // Add database locations to map
-  // populateLocations();
+  populateLocations();
+  console.log("calling server to populate locations from DB");
 };
 
 // Adds marker to map
@@ -30,7 +33,7 @@ function addNewMarker(e){
   });
 
   request.done(function(data){
-    console.log("in ajax success. data = " + data);
+    console.log("in addNewMarker.done function data = " + data);
     navigator.geolocation.getCurrentPosition(codeAddress);
     // Makes the new marker based on address in form submission
   });
@@ -112,18 +115,42 @@ var codeAddress = function(location) {
   });
 }
 
+var addMarkerFromDatabase = function(location) {
+  console.log("in addMarkerFromDatabase, and location is: " + location);
+  var geocoder = new google.maps.Geocoder();
+  console.log("geocoder initialized");
+  geocoder.geocode( { 'address': location}, function(results, status) {
+    console.log(results, status);
+    if (status == google.maps.GeocoderStatus.OK) {
+      map.setCenter(results[0].geometry.location);
+      var marker = new google.maps.Marker({
+        map: map,
+        position: results[0].geometry.location,
+        title: "This is where you are"
+      });
+    } else {
+      alert("Geocode was not successful for the following reason: " + status);
+    }
+  });
+}
+
 
 // gets all locations from server
-// function populateLocations() {
-//   var request = $.ajax({
-//     type: 'GET',
-//     url: '/locations'
-//   });
+function populateLocations() {
 
-//   request.done(function(data){
-//     console.log("in populateLocations ajax. data = " + data);
-//   });
-//   request.error(function(){
-//     console.log("errors");
-//   })
-// }
+  var request = $.ajax({
+    type: 'GET',
+    url: '/locations'
+  });
+
+  request.done(function(data){
+    for (var i = 0; i < data.length; i++) {
+      console.log("in populateLocations for loop, making marker for " + data[i].name);
+      addMarkerFromDatabase(data[i].city);
+    };
+  });
+
+  request.error(function(){
+    console.log("errors");
+  });
+}
