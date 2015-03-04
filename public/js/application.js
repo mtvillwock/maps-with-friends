@@ -98,7 +98,6 @@ function setUpAutocompleteForm(){
 // Finds LatLong of provided address and makes a marker at that location
 var codeAddress = function(location) {
   var address = document.getElementById("address").value;
-  console.log("in codeAddress, address = " + address, " and location is: " + location);
   var geocoder = new google.maps.Geocoder();
 
   geocoder.geocode( { 'address': address}, function(results, status) {
@@ -116,11 +115,8 @@ var codeAddress = function(location) {
 }
 
 var addMarkerFromDatabase = function(location) {
-  console.log("in addMarkerFromDatabase, and location is: " + location);
   var geocoder = new google.maps.Geocoder();
-  console.log("geocoder initialized");
   geocoder.geocode( { 'address': location}, function(results, status) {
-    console.log(results, status);
     if (status == google.maps.GeocoderStatus.OK) {
       map.setCenter(results[0].geometry.location);
       var marker = new google.maps.Marker({
