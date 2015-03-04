@@ -95,26 +95,17 @@ function setUpAutocompleteForm(){
   }
 }
 
-// Finds LatLong of provided address and makes a marker at that location
 var codeAddress = function(location) {
   var address = document.getElementById("address").value;
-  var geocoder = new google.maps.Geocoder();
-
-  geocoder.geocode( { 'address': address}, function(results, status) {
-    if (status == google.maps.GeocoderStatus.OK) {
-      map.setCenter(results[0].geometry.location);
-      var marker = new google.maps.Marker({
-        map: map,
-        position: results[0].geometry.location,
-        title: "This is where you are"
-      });
-    } else {
-      alert("Geocode was not successful for the following reason: " + status);
-    }
-  });
+  geoCode(address);
 }
 
 var addMarkerFromDatabase = function(location) {
+  geoCode(location);
+}
+
+// Finds LatLong of provided address and makes a marker at that location
+var geoCode = function(location) {
   var geocoder = new google.maps.Geocoder();
   geocoder.geocode( { 'address': location}, function(results, status) {
     if (status == google.maps.GeocoderStatus.OK) {
@@ -129,7 +120,6 @@ var addMarkerFromDatabase = function(location) {
     }
   });
 }
-
 
 // gets all locations from server
 function populateLocations() {
