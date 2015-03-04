@@ -11,6 +11,7 @@
   width: 450px;
   margin: auto;
   padding: 0;
+  border-style: outset;
 }
 
 .search-form {
@@ -18,4 +19,8 @@
   border: 1px solid gray;
   margin: 10px auto;
   width: 300px;
+}
+
+#friend-list {
+  list-style-type: none;
 }

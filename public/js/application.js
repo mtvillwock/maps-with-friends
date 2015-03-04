@@ -31,6 +31,7 @@ function addNewMarker(e){
 
   request.done(function(data){
     navigator.geolocation.getCurrentPosition(codeAddress);
+    $("#friend-list").append("<li>" + data.name + " " + data.location + "</li>")
     // Makes the new marker based on address in form submission
   });
 }
@@ -128,6 +129,7 @@ function populateLocations() {
   request.done(function(data){
     for (var i = 0; i < data.length; i++) {
       addMarkerFromDatabase(data[i].city);
+      $("#friend-list").append("<li>" + data[i].name + " " + data[i].city + "</li>")
     };
   });
 
