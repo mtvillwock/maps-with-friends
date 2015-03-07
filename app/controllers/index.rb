@@ -69,10 +69,12 @@ end
 post '/login' do
   # AJAX sign-in
   p params
-  @user = User.find_by(email: params[:email])
+  p params[:user][:email]
+  p params[:user][:password]
+  @user = User.find_by(email: params[:user][:email])
   p @user
   p @user.password
-  if @user && @user.password == params[:password]
+  if @user && @user.password == params[:user][:password]
     session[:user_id] = @user.id
     p session[:user_id]
     redirect '/'

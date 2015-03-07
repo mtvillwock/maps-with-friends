@@ -31,9 +31,14 @@ function addNewMarker(e){
 
   request.done(function(data){
     navigator.geolocation.getCurrentPosition(codeAddress);
-    $("#friend-list").append("<li>" + data.name + " " + data.location + "</li>")
     // Makes the new marker based on address in form submission
+    $("#friend-list").append("<li>" + data.name + " " + data.location + "</li>");
   });
+}
+
+function clearFriendForm() {
+  $('.search-form .friend').val("");
+  $('.search-form #address').val("");
 }
 
 // Creates a initial map with marker location of current user
@@ -116,6 +121,7 @@ var geoCode = function(location) {
       alert("Geocode was not successful for the following reason: " + status);
     }
   });
+  clearFriendForm();
 }
 
 // gets all locations from server
