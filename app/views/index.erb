@@ -1,6 +1,6 @@
 <div class="container">
 
-  <% if !current_user %>
+  <% unless user_logged_in %>
   <div>
     <h3>Please <a href="/register">register</a> or <a href="/login">login</a> to access Maps with Friends.</h3>
   </div>
@@ -9,7 +9,10 @@
   <% if current_user %>
 
   <nav class="logout">
-    <input type="submit" value="Log out">
+    <form action="/logout" method="post">
+      <input name="_method" type="hidden" value="delete">
+      <button>Log out</button>
+    </form>
   </nav>
 
   <div class="search-form">

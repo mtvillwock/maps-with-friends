@@ -126,16 +126,18 @@ var geoCode = function(location) {
 
 // gets all locations from server
 function populateLocations() {
-
   var request = $.ajax({
     type: 'GET',
     url: '/locations'
   });
 
   request.done(function(data){
+      console.log("we in the for loop populateLocations")
+      console.log(data)
     for (var i = 0; i < data.length; i++) {
-      addMarkerFromDatabase(data[i].city);
-      $("#friend-list").append("<li>" + data[i].name + " " + data[i].city + "</li>");
+      console.log("in da for loop")
+      addMarkerFromDatabase(data[i].location);
+      $("#friend-list").append("<li>" + data[i].name + " " + data[i].location + "</li>");
     };
   });
 

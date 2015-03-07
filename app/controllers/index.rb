@@ -10,11 +10,14 @@ end
 # Make a Friend Marker
 # =========================
 post '/' do
+  p '*' * 80
+  p current_user
+  p current_user.id
   @friend = Friend.new(name: params[:name], location: params[:location])
   content_type :json
   if @friend.save
-    p @friend
-    p "friend saved"
+    @friend.update_attributes(user_id: current_user.id)
+    p '*' * 80
     {name: @friend.name, location: @friend.location}.to_json
   else
     {error: "Friend did not save"}.to_json
@@ -26,14 +29,20 @@ end
 # Populate Map from User's friends
 # =========================
 get '/locations' do
-  @user = current_user
-  @friends = User.friends
+  p current_user
+  @user = User.find_by(id: session[:user_id])
+  p "THIS GUY" * 30
+  p @user
+  @friends = @user.friends
+  p @friends
   friends_and_locations = []
   content_type :json
   @friends.each do |friend, location|
-    friend = {name: friend.name, city: friend.location}
+    p friend = {name: friend.name, location: friend.location}
     friends_and_locations << friend
   end
+  p "ALL MY FRIENDS" * 20
+  p friends_and_locations
   friends_and_locations.to_json
 end
 
@@ -50,10 +59,8 @@ post '/register' do
   # AJAX switch login to sign-in
   user = User.new(params[:user])
     if user.save
-      {welcome: "Greetings, #{user.username}"}.to_json
       redirect '/login'
     else
-      {error: "Something went wrong."}.to_json
       erb :register
     end
 end
@@ -67,16 +74,9 @@ get '/login' do
 end
 
 post '/login' do
-  # AJAX sign-in
-  p params
-  p params[:user][:email]
-  p params[:user][:password]
   @user = User.find_by(email: params[:user][:email])
-  p @user
-  p @user.password
   if @user && @user.password == params[:user][:password]
     session[:user_id] = @user.id
-    p session[:user_id]
     redirect '/'
   else
     erb :login
@@ -87,7 +87,10 @@ end
 # Logout
 # =========================
 delete '/logout' do
-  # AJAX sign out (or just send home?)
+  p "begin logout"
+  p session
   session[:user_id] = nil
+  p "should be nil now"
+  p session
   redirect '/'
 end
