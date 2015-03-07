@@ -14,7 +14,7 @@ function registerUser(event) {
   event.preventDefault();
 
   var request = $.ajax({
-    url: '/login',
+    url: '/register',
     type: "POST"
   })
 
@@ -27,28 +27,29 @@ function registerUser(event) {
 
 function hideRegisterForm() {
   $('.register').css('display', "none");
-  // Display none is no good
   // need a way to render partials dynamically
   console.log("hid registration");
 }
 
 function showLoginForm() {
   $('.login').css('display', "inline");
-  debugger
   console.log("show login");
 }
 
 function loginSession(event) {
   event.preventDefault();
+  console.log("prevented default, attempting login")
 
   var request = $.ajax({
-    url: url,
+    url: '/login',
     type: "POST"
   })
 
   request.done(function() {
     hideLoginForm();
-  })
+    console.log("in loginSession callback");
+    renderForm();
+  });
   console.log("logged in");
 }
 
@@ -56,15 +57,15 @@ function hideLoginForm() {
   $('.login').css('display', "none");
 }
 
-function renderMapAndForm() {
-  // render map and form partial
+function renderForm() {
+  $('.search-form').css('display', "inline");
 }
 
 function logoutSession(event) {
   event.preventDefault();
 
   var request = $.ajax({
-    url: url,
+    url: '/logout',
     type: "DELETE"
   })
 

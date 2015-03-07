@@ -14,6 +14,7 @@
 }
 
 .search-form {
+  display: none;
   background-color: #d1e5e1;
   border: 1px solid gray;
   margin: 10px auto;

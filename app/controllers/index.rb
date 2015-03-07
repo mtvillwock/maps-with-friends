@@ -50,7 +50,7 @@ post '/login' do
   end
 end
 
-delete '/sessions/:id' do
+delete '/logout' do
   # AJAX sign out (or just send home?)
   session[:user_id] = nil
 end
