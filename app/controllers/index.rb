@@ -5,24 +5,24 @@ get '/' do
 end
 
 post '/' do
-  @user = User.new(name: params[:name], location: params[:location])
+  @friend = Friend.new(name: params[:name], location: params[:location])
   content_type :json
-  if @user.save
-    p @user
-    p "user saved"
-    {name: @user.name, location: @user.location}.to_json
+  if @friend.save
+    p @friend
+    p "friend saved"
+    {name: @friend.name, location: @friend.location}.to_json
   else
-    {error: "User did not save"}.to_json
+    {error: "Friend did not save"}.to_json
   end
 end
 
 get '/locations' do
-  @users = User.all
-  users_and_locations = []
+  @friends = Friend.all
+  friends_and_locations = []
   content_type :json
-  @users.each do |user, location|
-    friend = {name: user.name, city: user.location}
-    users_and_locations << friend
+  @friends.each do |friend, location|
+    friend = {name: friend.name, city: friend.location}
+    friends_and_locations << friend
   end
-  users_and_locations.to_json
+  friends_and_locations.to_json
 end

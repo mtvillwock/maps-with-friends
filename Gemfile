@@ -17,6 +17,8 @@ gem 'activerecord'
 
 gem 'rake'
 
+gem 'bcrypt'
+
 # development server
 gem 'shotgun'
 
