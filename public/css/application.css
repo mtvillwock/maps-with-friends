@@ -19,3 +19,7 @@
   margin: 10px auto;
   width: 300px;
 }
+
+.register input{
+  display: block;
+}
