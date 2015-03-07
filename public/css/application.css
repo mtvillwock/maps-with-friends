@@ -7,10 +7,11 @@
 }
 
 #map-canvas {
+  border-style: outset;
   height: 450px;
-  width: 450px;
   margin: auto;
   padding: 0;
+  width: 450px;
 }
 
 .search-form {
@@ -22,4 +23,8 @@
 
 .register input{
   display: block;
+}
+
+#friend-list {
+  list-style-type: none;
 }
