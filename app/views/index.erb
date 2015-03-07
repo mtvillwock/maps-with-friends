@@ -5,6 +5,33 @@
     <h2>See where your friends are</h2>
   </header>
 
+  <nav class="logout">
+    <input type="submit" value="Log out">
+  </nav>
+
+
+  <!-- if not register, show this -->
+    <p>Enter information to register as a user.</p>
+    <div class="register">
+      <form action="/register" method="POST">
+        <input type="text" name="user[username]" placeholder="username">
+        <input type="text" name="user[email]" placeholder="email">
+        <input type="password" name="user[password]" placeholder="password">
+        <br>
+        <input type="submit" value="Register">
+      </form>
+    </div>
+
+  <!-- need to make this a partial to load it dynamically -->
+    <div class="login">
+      <form action="/login" method="POST">
+        <input type="text" label="Email" name="user[email]" placeholder="email">
+        <input type="text" label="Password" name="user[password]" placeholder="password">
+        <input type="submit" value="Login">
+      </form>
+    </div>
+
+  <!-- need to make this a partial to load it dynamically -->
   <div class="search-form">
     <form action="/" method="post">
       <input class="friend" name="name" type="text" placeholder="Type your name">
@@ -14,4 +41,6 @@
   </div>
 
   <div id="map-canvas"></div>
+
+
 </div>
