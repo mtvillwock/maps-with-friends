@@ -1,6 +1,7 @@
 # Maps with Friends
 Status: Minimum viable product operational.
-A User can 
+
+A User can:
 - register
 - login
 - have markers populate on the map for all of the friends in the database that are associated with the user
