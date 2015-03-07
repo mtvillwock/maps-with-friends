@@ -28,7 +28,7 @@ get '/locations' do
   friends_and_locations.to_json
 end
 
-post '/users' do
+post '/register' do
   content_type :json
   # AJAX switch login to sign-in
   user = User.new(params[:user])
@@ -39,7 +39,7 @@ post '/users' do
     end
 end
 
-post '/sessions' do
+post '/login' do
   content_type :json
   # AJAX sign-in
   @user = User.find_by(email: params[:email])

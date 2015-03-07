@@ -23,3 +23,11 @@
 .register input{
   display: block;
 }
+
+.login {
+  display: none;
+}
+
+.logout {
+  display: none;
+}

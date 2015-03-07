@@ -5,6 +5,10 @@
     <h2>See where your friends are</h2>
   </header>
 
+  <nav class="logout">
+    <input type="submit" value="Log out">
+  </nav>
+
   <% if !current_user %>
   <!-- if not register, show this -->
     <p>Enter information to register as a user.</p>
@@ -12,16 +16,17 @@
       <form action="/login" method="POST">
         <input type="text" name="user[username]" placeholder="username">
         <input type="text" name="user[email]" placeholder="email">
-        <input type="text" name="user[password]" placeholder="password">
+        <input type="password" name="user[password]" placeholder="password">
         <br>
         <input type="submit" value="submit">
       </form>
     </div>
   <% end %>
 
+
   <% if current_user && session[:user_id] = nil %>
-  <!-- if not logged in, show this -->
-    <div class="register">
+  <!-- need to make this a partial to load it dynamically -->
+    <div class="login">
       <form action="/login" method="POST">
         <input type="text" label="Email" name="user[email]">
         <input type="text" label="Password" name="user[password]">
@@ -30,7 +35,7 @@
   <% end %>
 
   <% if current_user %>
-  <!-- Only display if logged in -->
+  <!-- need to make this a partial to load it dynamically -->
   <div class="search-form">
     <form action="/" method="post">
       <input class="friend" name="name" type="text" placeholder="Type your name">
