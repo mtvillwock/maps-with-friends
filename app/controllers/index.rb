@@ -1,14 +1,19 @@
+# =========================
+# Index
+# =========================
 get '/' do
 
   erb :index
 end
 
+# =========================
+# Make a Friend Marker
+# =========================
 post '/' do
   @friend = Friend.new(name: params[:name], location: params[:location])
   content_type :json
   if @friend.save
-    p @friend
-    p "friend saved"
+    @friend.update_attributes(user_id: current_user.id)
     {name: @friend.name, location: @friend.location}.to_json
   else
     {error: "Friend did not save"}.to_json
@@ -16,41 +21,60 @@ post '/' do
 end
 
 
-# AJAX call to populate map
+# =========================
+# Populate Map from User's friends
+# =========================
 get '/locations' do
-  @friends = Friend.all
+  @user = User.find_by(id: session[:user_id])
+  @friends = @user.friends
   friends_and_locations = []
   content_type :json
   @friends.each do |friend, location|
-    friend = {name: friend.name, city: friend.location}
+    friend = {name: friend.name, location: friend.location}
     friends_and_locations << friend
   end
   friends_and_locations.to_json
 end
 
+# =========================
+# Register
+# =========================
+get '/register' do
+
+  erb :register
+end
+
 post '/register' do
-  content_type :json
-  # AJAX switch login to sign-in
   user = User.new(params[:user])
     if user.save
-      {welcome: "Greetings, #{user.username}"}.to_json
+      redirect '/login'
     else
-      {error: "Something went wrong."}.to_json
+      erb :register
     end
 end
 
+# =========================
+# Login
+# =========================
+get '/login' do
+
+  erb :login
+end
+
 post '/login' do
-  content_type :json
-  # AJAX sign-in
-  @user = User.find_by(email: params[:email])
-  if @user && @user.password == params[:password]
+  @user = User.find_by(email: params[:user][:email])
+  if @user && @user.password == params[:user][:password]
     session[:user_id] = @user.id
+    redirect '/'
   else
-    {error: "Incorrect password"}.to_json
+    erb :login
   end
 end
 
+# =========================
+# Logout
+# =========================
 delete '/logout' do
-  # AJAX sign out (or just send home?)
   session[:user_id] = nil
+  redirect '/'
 end

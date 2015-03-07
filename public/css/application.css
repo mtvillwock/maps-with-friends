@@ -7,14 +7,14 @@
 }
 
 #map-canvas {
+  border-style: outset;
   height: 450px;
-  width: 450px;
   margin: auto;
   padding: 0;
+  width: 450px;
 }
 
 .search-form {
-  display: none;
   background-color: #d1e5e1;
   border: 1px solid gray;
   margin: 10px auto;
@@ -25,10 +25,6 @@
   display: block;
 }
 
-.login {
-  display: none;
-}
-
-.logout {
-  display: none;
+#friend-list {
+  list-style-type: none;
 }
