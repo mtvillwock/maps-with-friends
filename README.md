@@ -6,6 +6,7 @@ A User can:
 - login
 - have markers populate on the map for all of the friends in the database that are associated with the user
 - add new friend markers to the map
+- See names of their friends and their friend's locations
 
 ## Why Maps with Friends?
 Life has a way of scattering friends all over the place.
