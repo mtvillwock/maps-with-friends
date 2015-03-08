@@ -1,10 +1,29 @@
+html, body {
+  background-color: #d1e5e1;
+}
+
+#header {
+  background-color: #0d355a;
+  color: white;
+  text-align: center;
+}
+
+#header h1 {
+  font-size: 3em;
+}
+
+#header h2 {
+  font-size: 1.5em;
+}
+
+
 .container {
   margin: 20px auto;
   width: 85%;
   padding: 0px 20px 20px 20px;
-  border: 1px dotted black;
   text-align: center;
 }
+
 
 #map-canvas {
   border-style: outset;
@@ -16,14 +35,15 @@
 
 .search-form {
   background-color: #d1e5e1;
-  border: 1px solid gray;
-  margin: 10px auto;
+  margin: 2% auto;
   width: 300px;
 }
 
-.register input{
-  display: block;
+#add-marker {
+  background-color: #0d355a;
+  color: white;
 }
+
 
 #friend-list {
   list-style-type: none;
@@ -37,6 +57,18 @@
   font-style: italic;
 }
 
-.logout {
+#logged-in-nav {
+  text-align: center;
+  margin: auto;
+}
+
+.logout button{
+  background-color: #0d355a;
+  color: white;
   float: right;
+  margin-right: 2%;
+}
+
+.register input{
+  display: block;
 }

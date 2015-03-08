@@ -10,6 +10,8 @@
   <!--
     application.css is where you put your styles
   -->
+  <link rel="stylesheet" href="/css/skeleton.css">
+
   <link rel="stylesheet" href="/css/application.css">
 
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
@@ -20,12 +22,18 @@
   <script src="/js/application.js"></script>
 
   <title>Maps with Friends</title>
-  </head>
-  <body>
-    <header>
+</head>
+<body>
+  <header id="header">
     <h1>Maps with Friends</h1>
     <h2>See where your friends are</h2>
+    <nav class="logout">
+      <form action="/logout" method="post">
+        <input name="_method" type="hidden" value="delete">
+        <button>Log out</button>
+      </form>
+    </nav>
   </header>
   <%= yield %>
-  </body>
-  </html>
+</body>
+</html>
