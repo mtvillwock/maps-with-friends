@@ -1,10 +1,13 @@
 $(document).ready(function() {
   var map; // declaring map globally for later
+  var infowindow; // declaring globally for later
   navigator.geolocation.getCurrentPosition(initialize);
   // finds user's current position and creates map and marker showing them
   $('.search-form').on('submit', function(e){
     addNewMarker(e);
   })
+
+  // click listener for info window
 });
 
 function initialize(location) {
@@ -107,7 +110,7 @@ var addMarkerFromDatabase = function(location) {
 }
 
 // Finds LatLong of provided address and makes a marker at that location
-var geoCode = function(location) {
+var geoCode = function(location, infowindow) {
   var geocoder = new google.maps.Geocoder();
   geocoder.geocode( { 'address': location}, function(results, status) {
     if (status == google.maps.GeocoderStatus.OK) {
@@ -117,6 +120,7 @@ var geoCode = function(location) {
         position: results[0].geometry.location,
         title: "This is where you are"
       });
+      addInfoWindowListener(marker, infowindow)
     } else {
       alert("Geocode was not successful for the following reason: " + status);
     }
@@ -138,10 +142,27 @@ function populateLocations() {
       console.log("in da for loop")
       addMarkerFromDatabase(data[i].location);
       $("#friend-list").append("<p>" + "<span class='friend-name'>" + data[i].name + "</span>" + " in " + "<span class='friend-location'>" + data[i].location + "</span>" + "</p>");
+      createInfoWindow(data);
     };
   });
 
   request.error(function(){
-    console.log("errors");
+    console.log("errors retrieving or processing data from server");
   });
+}
+
+function createInfoWindow(data) {
+  var infoToDisplay = data.name + " in " + data.location
+  infoWindowOptions = {
+    content: infoToDisplay
+  }
+  var infowindow = new google.maps.InfoWindow(infoWindowOptions)
+}
+
+function addInfoWindowListener(marker, infowindow) {
+  google.maps.event.addListener(marker, 'click', showInfoWindow(infowindow));
+}
+
+function showInfoWindow(infowindow) {
+  infowindow.open(map,marker);
 }
