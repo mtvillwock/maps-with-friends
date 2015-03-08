@@ -17,6 +17,7 @@ Maps with Friends aims to provide a simple visual application to show where your
 - Sinatra framework
 - AJAX
 - Google Maps API
+- Skeleton CSS
 
 ##  How to Use
 - `git clone <url>`
