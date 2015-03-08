@@ -28,3 +28,15 @@
 #friend-list {
   list-style-type: none;
 }
+
+.friend-name {
+  font-weight: bold;
+}
+
+.friend-location {
+  font-style: italic;
+}
+
+.logout {
+  float: right;
+}
