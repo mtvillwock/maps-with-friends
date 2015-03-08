@@ -8,26 +8,27 @@
 
   <% if current_user %>
 
-  <header><%= current_user.username %></header>
-  <nav class="logout">
-    <form action="/logout" method="post">
-      <input name="_method" type="hidden" value="delete">
-      <button>Log out</button>
-    </form>
-  </nav>
+  <header id="logged-in-nav">
+    <h3>Welcome, <%= current_user.username %>!</h3>
+  </header>
 
-  <div class="search-form">
-    <form action="/" method="post">
-      <input class="friend" name="name" type="text" placeholder="Type your name">
-      <input id="address" class="controls" name="location" type="text" placeholder="Type your location">
-      <input type="submit" value="Add map marker">
-    </form>
+  <div class="one-third column">
+    <div class="search-form">
+      <p>Enter your friend's name and city to add their location on the map.</p>
+      <form action="/" method="post">
+        <input class="friend" name="name" type="text" placeholder="Your friend's name">
+        <input id="address" class="controls" name="location" type="text" placeholder="Your friend's city">
+        <button id="add-marker">Add map marker</button>
+      </form>
+    </div>
+
+    <div id="friend-list">
+      <h3>Friends List:</h3>
+    </div>
   </div>
 
-  <div id="map-canvas"></div>
-
-  <div id="friend-list">
-    <h3>Friends List:</h3>
+  <div class="six columns">
+    <div id="map-canvas"></div>
   </div>
 
   <% end %>

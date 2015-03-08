@@ -32,7 +32,7 @@ function addNewMarker(e){
   request.done(function(data){
     navigator.geolocation.getCurrentPosition(codeAddress);
     // Makes the new marker based on address in form submission
-    $("#friend-list").append("<p>" + data.name + " in " + data.location + "</p>");
+    $("#friend-list").append("<p>" + "<span class='friend-name'>" + data.name + "</span>" + " in " + "<span class='friend-location'>" + data.location + "</span>" + "</p>");
   });
 }
 
