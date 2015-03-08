@@ -10,13 +10,16 @@ end
 # Make a Friend Marker
 # =========================
 post '/' do
-  @friend = Friend.new(name: params[:name], location: params[:location])
-  content_type :json
-  if @friend.save
-    @friend.update_attributes(user_id: current_user.id)
-    {name: @friend.name, location: @friend.location}.to_json
-  else
-    {error: "Friend did not save"}.to_json
+  @friend = Friend.find_or_initialize_by(name: params[:name])
+  @friend.update_attributes(location: params[:location])
+  if @friend.location != nil
+    content_type :json
+    if @friend.save
+      @friendship = Friendship.create(friend_id: @friend.id, user_id: current_user.id)
+      {name: @friend.name, location: @friend.location}.to_json
+    else
+      {error: "Friend did not save"}.to_json
+    end
   end
 end
 
@@ -26,14 +29,19 @@ end
 # =========================
 get '/locations' do
   @user = User.find_by(id: session[:user_id])
-  @friends = @user.friends
-  friends_and_locations = []
-  content_type :json
-  @friends.each do |friend, location|
-    friend = {name: friend.name, location: friend.location}
-    friends_and_locations << friend
+  @friendships = @user.friendships
+  @friends = []
+  @friendships.each do |friendship|
+    @friends << Friend.find_by(id: friendship.friend_id)
   end
-  friends_and_locations.to_json
+  p @friends.each { |f| f.name }
+  content_type :json
+  # @friends.each do |friend|
+  #   friend = {name: friend.name, location: friend.location}
+  #   friends_and_locations << friend
+  # end
+  # friends_and_locations.to_json
+  @friends.to_json
 end
 
 # =========================

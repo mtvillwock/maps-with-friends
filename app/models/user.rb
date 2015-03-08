@@ -2,7 +2,8 @@ require 'bcrypt'
 
 class User < ActiveRecord::Base
   include BCrypt
-  has_many :friends
+  has_many :friendships
+  has_many :friends, through: :friendships
 
   validates_presence_of :username, :email, :password_hash
   validates_uniqueness_of :username, :email, :password_hash
