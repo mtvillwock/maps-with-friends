@@ -157,12 +157,16 @@ function createInfoWindow(data) {
     content: infoToDisplay
   }
   var infowindow = new google.maps.InfoWindow(infoWindowOptions)
+  console.log("in createInfoWindow, infowindow = " + infowindow)
+  return infowindow
 }
 
 function addInfoWindowListener(marker, infowindow) {
+  console.log("in addInfoWindowListener, infowindow = " + infowindow)
   google.maps.event.addListener(marker, 'click', showInfoWindow(infowindow));
 }
 
 function showInfoWindow(infowindow) {
+  console.log("in showInfoWindow, infowindow = " + infowindow)
   infowindow.open(map,marker);
 }
