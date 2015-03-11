@@ -2,7 +2,6 @@ $(document).ready(function() {
   var map; // declaring map globally for later
   var infowindow; // declaring globally for later
   var marker; // declaring globally for later
-  var newMarker;
   navigator.geolocation.getCurrentPosition(initialize);
   // finds user's current position and creates map and marker showing them
   $('.search-form').on('submit', function(e){
@@ -60,10 +59,17 @@ function createMapWithUserMarker(location){
 
   map = new google.maps.Map(mapCanvas, mapOptions);
 
-  var userMarker = new google.maps.Marker({
+  var marker = new google.maps.Marker({
     position: currentLocation,
-    map: map,
-    title: "You are here"
+    map: map
+  });
+
+  var infowindow = new google.maps.InfoWindow({
+    content: "You are here in "
+  });
+
+  google.maps.event.addListener(marker, 'click', function() {
+    infowindow.open(map, marker);
   });
 }
 
@@ -111,14 +117,14 @@ var codeAddress = function(location) {
 }
 
 // Used in populateLocations AJAX call
-var addMarkerFromDatabase = function(location) {
-  return geoCode(location);
+var addMarkerFromDatabase = function(data) {
+  return geoCode(data);
 }
 
 // Finds LatLong of provided address and makes a marker at that location
-var geoCode = function(location, infowindow) {
+var geoCode = function(data) {
   var geocoder = new google.maps.Geocoder();
-  geocoder.geocode( { 'address': location}, function(results, status) {
+  geocoder.geocode( { 'address': data.location }, function(results, status) {
     if (status == google.maps.GeocoderStatus.OK) {
       map.setCenter(results[0].geometry.location);
       var marker = new google.maps.Marker({
@@ -131,12 +137,12 @@ var geoCode = function(location, infowindow) {
     }
 
     var infowindow = new google.maps.InfoWindow({
-      content: "hello"
+      content: data.name
     });
 
     google.maps.event.addListener(marker, 'click', function() {
-          infowindow.open(map,marker);
-        });
+      infowindow.open(map,marker);
+    });
   });
 }
 
@@ -150,7 +156,7 @@ function populateLocations() {
   request.done(function(data){
     for (var i = 0; i < data.length; i++) {
 
-      var newMarker = addMarkerFromDatabase(data[i].location);
+      addMarkerFromDatabase(data[i]);
 
       $("#friend-list").append("<p>" + "<span class='friend-name'>" + data[i].name + "</span>" + " in " + "<span class='friend-location'>" + data[i].location + "</span>" + "</p>");
 
