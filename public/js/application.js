@@ -1,6 +1,7 @@
 $(document).ready(function() {
   var map; // declaring map globally for later
   var infowindow; // declaring globally for later
+  var marker; // declaring globally for later
   navigator.geolocation.getCurrentPosition(initialize);
   // finds user's current position and creates map and marker showing them
   $('.search-form').on('submit', function(e){
@@ -106,7 +107,7 @@ var codeAddress = function(location) {
 }
 
 var addMarkerFromDatabase = function(location) {
-  geoCode(location);
+  return geoCode(location);
 }
 
 // Finds LatLong of provided address and makes a marker at that location
@@ -120,10 +121,10 @@ var geoCode = function(location, infowindow) {
         position: results[0].geometry.location,
         title: "This is where you are"
       });
-      addInfoWindowListener(marker, infowindow)
     } else {
       alert("Geocode was not successful for the following reason: " + status);
     }
+  return marker
   });
   clearFriendForm();
 }
@@ -140,9 +141,12 @@ function populateLocations() {
       console.log(data)
     for (var i = 0; i < data.length; i++) {
       console.log("in da for loop")
-      addMarkerFromDatabase(data[i].location);
+      var marker = addMarkerFromDatabase(data[i].location);
+      console.log(marker); //
       $("#friend-list").append("<p>" + "<span class='friend-name'>" + data[i].name + "</span>" + " in " + "<span class='friend-location'>" + data[i].location + "</span>" + "</p>");
-      createInfoWindow(data);
+
+      addInfoWindowListener(marker, createInfoWindow(data));
+
     };
   });
 
@@ -158,15 +162,18 @@ function createInfoWindow(data) {
   }
   var infowindow = new google.maps.InfoWindow(infoWindowOptions)
   console.log("in createInfoWindow, infowindow = " + infowindow)
+  console.log(infowindow); //
   return infowindow
 }
 
 function addInfoWindowListener(marker, infowindow) {
   console.log("in addInfoWindowListener, infowindow = " + infowindow)
-  google.maps.event.addListener(marker, 'click', showInfoWindow(infowindow));
+  var marker = marker
+  console.log(marker); // undefined
+  google.maps.event.addListener(marker, 'click', showInfoWindow(infowindow, marker));
 }
 
-function showInfoWindow(infowindow) {
+function showInfoWindow(infowindow, marker) {
   console.log("in showInfoWindow, infowindow = " + infowindow)
   infowindow.open(map,marker);
 }
