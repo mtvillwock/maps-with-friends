@@ -10,6 +10,12 @@
 
   <header id="logged-in-nav">
     <h3>Welcome, <%= current_user.username %>!</h3>
+    <nav class="logout">
+      <form action="/logout" method="post">
+        <input name="_method" type="hidden" value="delete">
+        <button>Log out</button>
+      </form>
+    </nav>
   </header>
 
   <div class="one-third column">
@@ -24,6 +30,17 @@
 
     <div id="friend-list">
       <h3>Friends List:</h3>
+      <% if @friends %>
+      <ul>
+      <% @friends.each do |friend| %>
+        <li id="<%= friend.id %>">
+           <%= friend.name %>
+           <button ><a class="delete" href="/friend/<%= friend.id %>/delete">
+          Delete</a></button>
+           </li>
+          <% end %>
+      </ul>
+      <% end %>
     </div>
   </div>
 

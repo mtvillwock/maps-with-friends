@@ -2,27 +2,45 @@
 # Index
 # =========================
 get '/' do
-
+  @user = User.find_by(id: session[:user_id])
+  @friends = []
+  @user.friendships.each do |friendship|
+    @friends << Friend.find(friendship.friend_id)
+  end
   erb :index
 end
 
 # =========================
-# Make a Friend Marker
+# Make a Friend and Friendship
 # =========================
 post '/' do
+  @user = User.find_by(id: session[:user_id])
   @friend = Friend.find_or_initialize_by(name: params[:name])
   @friend.update_attributes(location: params[:location])
   if @friend.location != nil
     content_type :json
     if @friend.save
       @friendship = Friendship.create(friend_id: @friend.id, user_id: current_user.id)
-      {name: @friend.name, location: @friend.location}.to_json
+      {name: @friend.name, location: @friend.location, id: @friend.id}.to_json
     else
       {error: "Friend did not save"}.to_json
     end
   end
 end
 
+# =========================
+# Delete a Friend and Friendship
+# =========================
+
+delete '/friends/:id/delete' do
+  @friend = Friend.find(params[:id])
+  content_type :json
+  if @friend.destroy
+    { id: params[:id] }.to_json
+  else
+    { error: "Friend not destroyed"}.to_json
+  end
+end
 
 # =========================
 # Populate Map from User's friends

@@ -2,6 +2,10 @@ html, body {
   background-color: #d1e5e1;
 }
 
+body a {
+  text-decoration: none;
+}
+
 #header {
   background-color: #0d355a;
   color: white;
@@ -14,6 +18,11 @@ html, body {
 
 #header h2 {
   font-size: 1.5em;
+}
+
+#header a {
+  color: white;
+  text-decoration: none;
 }
 
 
@@ -71,4 +80,9 @@ html, body {
 
 .register input{
   display: block;
+}
+
+.infowindow img {
+  max-height: 100px;
+  max-width: 100px;
 }
