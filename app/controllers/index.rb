@@ -36,7 +36,7 @@ end
 delete '/friends/:id/delete' do
   @friend = Friend.find(params[:id])
   content_type :json
-  if @friend.destroy
+  if @friend.delete
     { id: params[:id] }.to_json
   else
     { error: "Friend not destroyed"}.to_json
