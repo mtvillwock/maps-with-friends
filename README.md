@@ -1,5 +1,5 @@
 # Maps with Friends
-Status: Minimum viable product operational.
+Status: Feature additions are pending.
 
 A User can:
 - register
