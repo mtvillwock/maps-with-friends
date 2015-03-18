@@ -6,11 +6,7 @@ $(document).ready(function() {
   // finds user's current position and creates map and marker showing them
   $('.search-form').on('submit', function(e){
     addNewMarker(e);
-  });
-
-  $('#friend-list').on('click', ".delete", function(e) {
-    deleteFriend(e);
-  });
+  })
 
   // click listener for info window
 });
@@ -38,38 +34,11 @@ function addNewMarker(e){
   });
 
   request.done(function(data){
-    console.log("in addNewMarker done callback")
-    console.log(data);
-    // navigator.geolocation.getCurrentPosition(codeAddress);
     codeAddress(data);
     // Makes the new marker based on address in form submission
     $("#friend-list").append("<p>" + "<span class='friend-name'>" + data.name + "</span>" + " in " + "<span class='friend-location'>" + data.location + "</span>" + "</p>");
-    console.log("form should clear");
-    clearFriendForm();
   });
 }
-
-function deleteFriend(e) {
-  e.preventDefault();
-
-  var id = e.target.closest('li').id;
-  var friend = e.target.closest('li');
-  console.log(id);
-  console.log(friend);
-
-
-  var request = $.ajax({
-    type: 'delete',
-    url: '/friends/' + id + "/delete"
-  });
-
-  request.done(function(data) {
-    console.log("in done function")
-    friend.remove();
-  })
-}
-
-
 
 function clearFriendForm() {
   $('.search-form .friend').val("");
@@ -92,19 +61,15 @@ function createMapWithUserMarker(location){
 
   var marker = new google.maps.Marker({
     position: currentLocation,
-    map: map,
-    title: "You are here"
+    map: map
   });
 
   var infowindow = new google.maps.InfoWindow({
-    content: "Hey Username!" // Add user information here
+    content: "You are here"
   });
 
   google.maps.event.addListener(marker, 'click', function() {
     infowindow.open(map, marker);
-    setTimeout(function() {
-        infowindow.close();
-      }, 3000)
   });
 }
 
@@ -146,47 +111,39 @@ function setUpAutocompleteForm(){
 
 // Used in addNewMarker AJAX call
 var codeAddress = function(data) {
-  // var address = document.getElementById("address").value;
-  // console.log(address)
-  console.log("in codeAddress before geoCode")
-  console.log(data)
-  geoCode(data);
+  var address = document.getElementById("address").value;
+  geoCode(data, address);
 }
 
 // Used in populateLocations AJAX call
 var addMarkerFromDatabase = function(data) {
-  console.log("in addMarkerFromDatabase before geoCode")
-  geoCode(data);
+  return geoCode(data);
 }
 
 // Finds LatLong of provided address and makes a marker at that location
-var geoCode = function(data) {
-  console.log("in geoCode")
-  console.log(data);
+var geoCode = function(data, location) {
   var geocoder = new google.maps.Geocoder();
-  geocoder.geocode( { 'address': data.location }, function(results, status) {
+  geocoder.geocode( { 'address': location }, function(results, status) {
     if (status == google.maps.GeocoderStatus.OK) {
       map.setCenter(results[0].geometry.location);
       var marker = new google.maps.Marker({
         map: map,
         position: results[0].geometry.location,
-        title: data.name
+        title: "Your friend here"
       });
     } else {
       alert("Geocode was not successful for the following reason: " + status);
     }
 
     var infowindow = new google.maps.InfoWindow({
-      // content: data.name // Add user info with HTML action
-      content: "<div class='infowindow'><img src='../placeholder.png'><p>" + data.name +"</p></div>"
+      content: data.name
     });
 
     google.maps.event.addListener(marker, 'click', function() {
       infowindow.open(map,marker);
-      setTimeout(function() {
-        infowindow.close();
-      }, 3000)
+      setTimeout(infowindow.close(), 5000);
     });
+  clearFriendForm();
   });
 }
 
@@ -200,10 +157,12 @@ function populateLocations() {
   request.done(function(data){
     for (var i = 0; i < data.length; i++) {
 
+      setTimeout(function() {
       addMarkerFromDatabase(data[i]);
-
+      // Do it every half second
+      console.log("in setInterval")
       $("#friend-list").append("<p>" + "<span class='friend-name'>" + data[i].name + "</span>" + " in " + "<span class='friend-location'>" + data[i].location + "</span>" + "</p>");
-
+      }, 2000);
     };
   });
 
