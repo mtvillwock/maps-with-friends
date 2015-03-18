@@ -2,7 +2,7 @@
 # Index
 # =========================
 get '/' do
-  @user = User.find_by(id: session[:user_id])
+  @user = User.find_or_initialize_by(id: session[:user_id])
   @friends = []
   @user.friendships.each do |friendship|
     @friends << Friend.find(friendship.friend_id)
