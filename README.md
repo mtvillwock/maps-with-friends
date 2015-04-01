@@ -1,5 +1,5 @@
 # Maps with Friends
-Status: Feature additions are pending.
+Status: Facebook OAuth addition pending.
 
 A User can:
 - register
