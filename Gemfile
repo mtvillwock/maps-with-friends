@@ -19,6 +19,9 @@ gem 'rake'
 
 gem 'bcrypt'
 
+# OAuth for Facebook
+gem 'omniauth-facebook'
+
 # development server
 gem 'shotgun'
 
