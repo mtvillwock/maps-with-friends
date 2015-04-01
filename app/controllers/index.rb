@@ -49,9 +49,8 @@ end
 get '/locations' do
   @user = User.find_by(id: session[:user_id])
   @friendships = @user.friendships
-  @friends = []
   @friendships.each do |friendship|
-    @friends << Friend.find_by(id: friendship.friend_id)
+    @friends << User.find_by(id: friendship.friend_id)
   end
   p @friends.each { |f| f.name }
   content_type :json
