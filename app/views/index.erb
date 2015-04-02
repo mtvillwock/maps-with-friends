@@ -3,6 +3,13 @@
   <% unless user_logged_in %>
   <div>
     <h3>Please <a href="/register">register</a> or <a href="/login">login</a> to access Maps with Friends.</h3>
+
+    <div class="login-container">
+      <a href="#">
+        <img src="https://app.carehr.com/assets/facebook-login-56a158df50e9439b9515a99d1472fb36.png" id="facebook_button"/>
+      </a>
+    </div>
+    <!-- credit to Trading Faces -->
   </div>
   <% end %>
 
@@ -32,13 +39,13 @@
       <h3>Friends List:</h3>
       <% if @friends %>
       <ul>
-      <% @friends.each do |friend| %>
+        <% @friends.each do |friend| %>
         <li id="<%= friend.id %>">
-           <%= friend.name %>
-           <button ><a class="delete" href="/friend/<%= friend.id %>/delete">
+         <%= friend.name %>
+         <button ><a class="delete" href="/friend/<%= friend.id %>/delete">
           Delete</a></button>
-           </li>
-          <% end %>
+        </li>
+        <% end %>
       </ul>
       <% end %>
     </div>
