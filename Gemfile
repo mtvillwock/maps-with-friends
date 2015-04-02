@@ -22,6 +22,9 @@ gem 'bcrypt'
 # OAuth for Facebook
 gem 'omniauth-facebook'
 
+# HTTParty for use with OAuth
+gem 'httparty'
+
 # development server
 gem 'shotgun'
 
