@@ -1,7 +1,4 @@
-get '/login_with_facebook' do
-
-end
-
+# Routes for Facebook OAuth
 get '/auth/:provider/callback' do
   response = HTTParty.new("https://www.facebook.com/dialog/oauth?
     client_id=#{ENV['APP_ID']}&display=popup&
