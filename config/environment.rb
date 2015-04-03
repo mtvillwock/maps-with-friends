@@ -20,6 +20,7 @@ require 'sinatra'
 require "sinatra/reloader" if development?
 
 require 'omniauth-facebook'
+require 'rack-cors'
 
 require 'erb'
 
