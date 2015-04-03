@@ -25,6 +25,9 @@ gem 'omniauth-facebook'
 # HTTParty for use with OAuth
 gem 'httparty'
 
+# Rack CORS for AJAX cross server requests
+gem 'rack-cors'
+
 # development server
 gem 'shotgun'
 
