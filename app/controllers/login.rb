@@ -7,7 +7,12 @@ get '/register' do
 end
 
 post '/register' do
-  user = User.new(params[:user])
+  user = User.new(
+    username: params[:user][:username],
+    email: params[:user][:email],
+    password_hash: params[:user][:password]
+    )
+  p params
   if user.save
     redirect '/login'
   else
