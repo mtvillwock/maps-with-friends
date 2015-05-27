@@ -1,3 +1,4 @@
+require 'json'
 # Routes for Facebook OAuth
 get '/auth/:provider/callback' do
   response = HTTParty.new("https://www.facebook.com/dialog/oauth?

@@ -19,6 +19,8 @@ gem 'rake'
 
 gem 'bcrypt'
 
+gem 'json'
+
 # OAuth for Facebook
 gem 'omniauth-facebook'
 
@@ -43,5 +45,6 @@ group :test, :development do
   gem 'factory_girl'
   gem 'faker'
   gem 'dotenv'
+  gem 'pry-debugger'
 end
 
