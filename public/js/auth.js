@@ -9,14 +9,15 @@ function addFacebookLoginListener() {
 
 function loginWithFacebook() {
   console.log("click listener works")
-  event.preventDefault();
+  // event.preventDefault();
 
   var request = $.ajax({
-    url: '/auth/facebook/'
+    url: '/login-via-facebook',
+    type: 'get'
   })
 
-  request.done(function() {
-    console.log("login done function")
+  request.done(function(response) {
+    console.log("login done function, response is: ", response);
   })
 
   request.fail(function() {
