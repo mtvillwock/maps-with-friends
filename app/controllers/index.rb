@@ -1,7 +1,13 @@
 # =========================
 # Index
 # =========================
+get '/test' do
+  erb :test
+end
+
 get '/' do
+  facebook = Facebook.new
+  @facebook_url = facebook.sign_in_url
   @user = User.find_or_initialize_by(id: session[:user_id])
   @friends = []
   @user.friendships.each do |friendship|

@@ -1,32 +1,32 @@
 require 'json'
 require 'httparty'
-# Routes for Facebook OAuth
-get '/login-via-facebook' do
-  p "hit the route"
-end
 
-# CONTACTING FACEBOOK TO OPEN DIALOG
 get '/oauth2callback' do
- # response = HTTParty.get("https://www.facebook.com/dialog/oauth?
- #  client_id=#{ENV['APP_ID']}&display=popup&
- #  response_type=code&
- #  &redirect_uri=#{ENV['REDIRECT_URI']}")
-# p response
-p params
-state = params["state"]
-code = params["code"]
+  facebook = Facebook.new
+  p "in oauth2callback"
+  p params
+  p state = params["state"]
+  p code = params["code"]
   # code response type returns an encrypted string, use this type for server handling access token
-
 #https://www.facebook.com/connect/login_success.html#access_token=ACCESS_TOKEN
 # end
+content_type :json
+if state == "logged_in"
+  facebook.exchange_token(code)
+  {success: "yay"}.to_json
+else
+  {error: "failure"}.to_json
+end
 
 # EXCHANGE CODE FOR ACCESS TOKEN
 # get '/exchange_code_for_token' do
-response = HTTParty.post("https://graph.facebook.com/v2.3/oauth/access_token?
-  client_id=#{ENV['APP_ID']}
-  &redirect_uri=#{ENV['REDIRECT-URI']}
-  &client_secret=#{ENV['APP_SECRET']}
-  &code={code-parameter}")
+# response = HTTParty.post("https://graph.facebook.com/v2.3/oauth/access_token?
+#   client_id=#{ENV['APP_ID']}
+#   &redirect_uri=#{ENV['REDIRECT_URI']}
+#   &client_secret=#{ENV['APP_SECRET']}
+#   &code=#{code}")
+
+# p response
 # end
 # response will be JSON, and will be an access token or an error message
 # {“access_token”: <access-token>, “token_type”:<type>, “expires_in”:<seconds-til-expiration>}
