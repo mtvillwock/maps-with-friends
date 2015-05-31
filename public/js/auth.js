@@ -20,8 +20,8 @@ function loginWithFacebook() {
     console.log("login done function, response is: ", response);
   })
 
-  request.fail(function() {
-    console.log("login fail function")
+  request.fail(function(response) {
+    console.log("login fail function: ", response);
   })
 
   request.always(function() {

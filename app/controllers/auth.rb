@@ -3,15 +3,15 @@ require 'httparty'
 # Routes for Facebook OAuth
 get '/login-via-facebook' do
   p "hit the route"
-# end
+end
 
 # CONTACTING FACEBOOK TO OPEN DIALOG
-# get '/auth/:provider/callback' do
-response = HTTParty.get("https://www.facebook.com/dialog/oauth?
-  client_id=#{ENV['APP_ID']}&display=popup&
-  response_type=code&
-  &redirect_uri=#{ENV['REDIRECT_URI']}")
-p response
+get '/oauth2callback' do
+ # response = HTTParty.get("https://www.facebook.com/dialog/oauth?
+ #  client_id=#{ENV['APP_ID']}&display=popup&
+ #  response_type=code&
+ #  &redirect_uri=#{ENV['REDIRECT_URI']}")
+# p response
 p params
 state = params["state"]
 code = params["code"]
