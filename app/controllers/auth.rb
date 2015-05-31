@@ -1,7 +1,7 @@
 require 'json'
 require 'httparty'
 
-get '/oauth2callback' do
+get '/auth/facebook/callback' do
   facebook = Facebook.new
   p "in oauth2callback"
   p params
@@ -10,8 +10,6 @@ get '/oauth2callback' do
   # code response type returns an encrypted string, use this type for server handling access token
 #https://www.facebook.com/connect/login_success.html#access_token=ACCESS_TOKEN
 # end
-
-
 
 if state == "logged_in"
   facebook.exchange_token(code)
