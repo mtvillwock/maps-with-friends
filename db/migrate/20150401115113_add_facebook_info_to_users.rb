@@ -4,9 +4,7 @@ class AddFacebookInfoToUsers < ActiveRecord::Migration
     add_column :users, :provider, :string, default: 'facebook'
     add_column :users, :uid, :bigint
     add_column :users, :oauth_token, :string
-    add_column :users, :email, :string
+    #add_column :users, :email, :string
     rename_column :users, :name, :full_name
-  end
-end
   end
 end
