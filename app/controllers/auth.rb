@@ -10,12 +10,12 @@ get '/oauth2callback' do
   # code response type returns an encrypted string, use this type for server handling access token
 #https://www.facebook.com/connect/login_success.html#access_token=ACCESS_TOKEN
 # end
-content_type :json
+
 if state == "logged_in"
   facebook.exchange_token(code)
-  {success: "yay"}.to_json
+  redirect '/'
 else
-  {error: "failure"}.to_json
+  status 404
 end
 
 # EXCHANGE CODE FOR ACCESS TOKEN
