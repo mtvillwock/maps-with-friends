@@ -1,7 +1,13 @@
 # =========================
 # Index
 # =========================
+get '/test' do
+  erb :test
+end
+
 get '/' do
+  facebook = Facebook.new
+  @facebook_url = facebook.sign_in_url
   @user = User.find_or_initialize_by(id: session[:user_id])
   @friends = []
   @user.friendships.each do |friendship|
@@ -74,47 +80,4 @@ get '/locations' do
     content_type :json
     {error: "No friendships found"}.to_json
   end
-end
-
-# =========================
-# Register
-# =========================
-get '/register' do
-
-  erb :register
-end
-
-post '/register' do
-  user = User.new(params[:user])
-  if user.save
-    redirect '/login'
-  else
-    erb :register
-  end
-end
-
-# =========================
-# Login
-# =========================
-get '/login' do
-
-  erb :login
-end
-
-post '/login' do
-  @user = User.find_by(email: params[:user][:email])
-  if @user && @user.password == params[:user][:password]
-    session[:user_id] = @user.id
-    redirect '/'
-  else
-    erb :login
-  end
-end
-
-# =========================
-# Logout
-# =========================
-delete '/logout' do
-  session[:user_id] = nil
-  redirect '/'
 end

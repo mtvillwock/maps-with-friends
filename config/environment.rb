@@ -19,7 +19,11 @@ require 'logger'
 require 'sinatra'
 require "sinatra/reloader" if development?
 
+require 'omniauth-facebook'
+require 'rack/cors'
 
+require 'dotenv'
+Dotenv.load
 
 require 'erb'
 
