@@ -11,6 +11,8 @@ get '/oauth2callback' do
 #https://www.facebook.com/connect/login_success.html#access_token=ACCESS_TOKEN
 # end
 
+
+
 if state == "logged_in"
   facebook.exchange_token(code)
   redirect '/'

@@ -5,7 +5,7 @@ class Facebook
   def sign_in_url
     p "in sign_in"
     # url string with the client key and redirect url (your hostname + oauth2callback) and whatever scope or other parameters you need
-    url = "https://www.facebook.com/dialog/oauth?client_id=#{ENV['APP_ID']}&response_type=code&redirect_uri=#{ENV['REDIRECT_URI']}"
+    url = "https://www.facebook.com/dialog/oauth?client_id=#{ENV['APP_ID']}&response_type=code&redirect_uri=#{ENV['HOSTNAME']}#{ENV['REDIRECT_URI']}"
     p url
     url
     #https://accounts.google.com/o/oauth2/auth?
