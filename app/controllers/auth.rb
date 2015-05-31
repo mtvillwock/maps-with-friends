@@ -1,9 +1,10 @@
 require 'json'
 require 'httparty'
 
-get '/auth/facebook/callback' do
+get '/oauth2callback' do
   facebook = Facebook.new
   p "in oauth2callback"
+  p "params are:"
   p params
   p state = params["state"]
   p code = params["code"]
