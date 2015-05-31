@@ -33,8 +33,9 @@ gem 'rack-cors', :require => 'rack/cors'
 # development server
 gem 'shotgun'
 
-# move to production because Rakefile needs it on Heroku
+# move to production because of Heroku
 gem 'rspec'
+gem 'dotenv'
 
 group :test do
   gem 'shoulda-matchers'
@@ -46,7 +47,6 @@ end
 group :test, :development do
   gem 'factory_girl'
   gem 'faker'
-  gem 'dotenv'
   gem 'pry-debugger'
 end
 
