@@ -3,8 +3,7 @@ require 'httparty'
 
 get '/login-via-facebook' do
   facebook = Facebook.new
-  session['facebook-oauth-state'] = SecureRandom.uuid
-  state = session['facebook-oauth-state']
+  state = set_facebook_session
   p "FB OAuth State in session hash is: #{state}"
   redirect facebook.sign_in_url(state)
 end
@@ -13,10 +12,7 @@ get '/oauth2callback' do
   facebook = Facebook.new
   p state = params["state"]
   p code = params["code"]
-  session["foo"] = "bar"
-  p "session hash is:"
-  p session
-  p session['facebook-oauth-state']
+  p facebook_session?
 
   # if state == session['facebook-oauth-state']
   # EXCHANGE CODE FOR ACCESS TOKEN
@@ -24,9 +20,16 @@ get '/oauth2callback' do
   # The %&C is necessary to escape the | character in the access token that uses the app id and secret
   p access_token = ENV['APP_ID'] + "%7C" + ENV['APP_SECRET']
   # INSPECT ACCESS TOKEN
-  facebook.inspect_token(user_token, access_token)
+  inspected_token = facebook.inspect_token(user_token, access_token)
   # CREATE OR LOGIN USER
-  p "you made it"
+  p info = facebook.get_user_info(user_token)
+  p "#{info}"
+  # See user.rb for methods Rafael wrote
+  # formatting is different because I think
+  # he used the omniauth gem, but I can
+  # switch over to that if it is easier
+  # update oauth_token, uid, email, location
+  # redirect home or throw error
 end
 
   # Store token in Database

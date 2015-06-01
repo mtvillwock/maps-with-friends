@@ -1,5 +1,14 @@
 helpers do
 
+  def set_facebook_session
+    session['facebook-oauth-state'] = SecureRandom.uuid
+    @facebook_session = session['facebook-oauth-state']
+  end
+
+  def facebook_session?
+    @facebook_session
+  end
+
   def current_user
     @user = User.find(session[:user_id]) unless session[:user_id] == nil
   end
