@@ -24,12 +24,15 @@ get '/oauth2callback' do
   # CREATE OR LOGIN USER
   p info = facebook.get_user_info(user_token)
   p "#{info}"
+  # user = User.new
+  # user.from_omniauth(auth)
   # See user.rb for methods Rafael wrote
   # formatting is different because I think
   # he used the omniauth gem, but I can
   # switch over to that if it is easier
   # update oauth_token, uid, email, location
   # redirect home or throw error
+  # redirect '/'
 end
 
   # Store token in Database
