@@ -1,13 +1,7 @@
 # =========================
 # Index
 # =========================
-get '/test' do
-  erb :test
-end
-
 get '/' do
-  facebook = Facebook.new
-  @facebook_url = facebook.sign_in_url
   @user = User.find_or_initialize_by(id: session[:user_id])
   @friends = []
   @user.friendships.each do |friendship|
@@ -30,8 +24,9 @@ post '/' do
   if @friend.location != nil
     content_type :json
     if @friend.save
-      @friendship = Friendship.create(friend_id: @friend.id, user_id: current_user.id)
-      p @friendship
+      # @friendship = Friendship.create(friend_id: @friend.id, user_id: current_user.id)
+      @user.friends << @friend
+      p @user.friends
       {name: @friend.name, location: @friend.location, id: @friend.id}.to_json
     else
       {error: "Friend did not save"}.to_json

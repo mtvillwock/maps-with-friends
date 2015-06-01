@@ -1,66 +1,34 @@
 require 'json'
 require 'httparty'
 
+get '/login-via-facebook' do
+  facebook = Facebook.new
+  session['facebook-oauth-state'] = SecureRandom.uuid
+  state = session['facebook-oauth-state']
+  p "FB OAuth State in session hash is: #{state}"
+  redirect facebook.sign_in_url(state)
+end
+
 get '/oauth2callback' do
   facebook = Facebook.new
-  p "in oauth2callback"
-  p "params are:"
-  p params
   p state = params["state"]
   p code = params["code"]
-  # code response type returns an encrypted string, use this type for server handling access token
-#https://www.facebook.com/connect/login_success.html#access_token=ACCESS_TOKEN
-# end
+  session["foo"] = "bar"
+  p "session hash is:"
+  p session
+  p session['facebook-oauth-state']
 
-if state == "logged_in"
-  facebook.exchange_token(code)
-  redirect '/'
-else
-  status 404
+  # if state == session['facebook-oauth-state']
+  # EXCHANGE CODE FOR ACCESS TOKEN
+  user_token = facebook.request_token(code)
+  # The %&C is necessary to escape the | character in the access token that uses the app id and secret
+  p access_token = ENV['APP_ID'] + "%7C" + ENV['APP_SECRET']
+  # INSPECT ACCESS TOKEN
+  facebook.inspect_token(user_token, access_token)
+  # CREATE OR LOGIN USER
+  p "you made it"
 end
 
-# EXCHANGE CODE FOR ACCESS TOKEN
-# get '/exchange_code_for_token' do
-# response = HTTParty.post("https://graph.facebook.com/v2.3/oauth/access_token?
-#   client_id=#{ENV['APP_ID']}
-#   &redirect_uri=#{ENV['REDIRECT_URI']}
-#   &client_secret=#{ENV['APP_SECRET']}
-#   &code=#{code}")
-
-# p response
-# end
-# response will be JSON, and will be an access token or an error message
-# {“access_token”: <access-token>, “token_type”:<type>, “expires_in”:<seconds-til-expiration>}
-
-
-#https://developers.facebook.com/docs/facebook-login/manually-build-a-login-flow/v2.3#checktoken
-# INSPECT ACCESS TOKEN
-# get 'inspect_access_token' do
-  # response = HTTParty.new("graph.facebook.com/debug_token?
-  #      input_token={token-to-inspect}
-  #      &access_token={app-token-or-admin-token}")
-# Returns JSON containing data about inspected token
-# Check if the user id, app id, and application are valid
-# Sample JSON response
-# {
-#     "data": {
-#         "app_id": 138483919580948,
-#         "application": "Social Cafe",
-#         "expires_at": 1352419328,
-#         "is_valid": true,
-#         "issued_at": 1347235328,
-#         "metadata": {
-#             "sso": "iphone-safari"
-#         },
-#         "scopes": [
-#             "email",
-#             "publish_actions"
-#         ],
-#         "user_id": 1207059
-#     }
-# }
-end
-
-# Store token in Database
-# Need to track login status
-# Need to log people out
+  # Store token in Database
+  # Need to track login status
+  # Need to log people out
