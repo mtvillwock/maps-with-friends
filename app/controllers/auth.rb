@@ -33,7 +33,8 @@ get '/oauth2callback' do
   # update oauth_token, uid, email, location
   # redirect home or throw error
   # redirect '/'
-  # another reference
+
+  # Use this reference for FB OAuth and for how to write a good README
   # https://github.com/TeaWithStrangers/tws-on-rails
 end
 
