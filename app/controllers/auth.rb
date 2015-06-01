@@ -33,6 +33,8 @@ get '/oauth2callback' do
   # update oauth_token, uid, email, location
   # redirect home or throw error
   # redirect '/'
+  # another reference
+  # https://github.com/TeaWithStrangers/tws-on-rails
 end
 
   # Store token in Database
