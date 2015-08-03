@@ -21,31 +21,12 @@
 
   <script src="/js/application.js"></script>
   <script src="/js/auth.js"></script>
-<script>
-  window.fbAsyncInit = function() {
-    FB.init({
-      appId      : '374462892754353',
-      xfbml      : true,
-      version    : 'v2.3'
-    });
-  };
-
-  (function(d, s, id){
-     var js, fjs = d.getElementsByTagName(s)[0];
-     if (d.getElementById(id)) {return;}
-     js = d.createElement(s); js.id = id;
-     js.src = "//connect.facebook.net/en_US/sdk.js";
-     fjs.parentNode.insertBefore(js, fjs);
-   }(document, 'script', 'facebook-jssdk'));
-</script>
-
-
   <title>Maps with Friends</title>
 </head>
 <body>
   <header id="header">
     <h1><a href="/">Maps with Friends</a></h1>
-    <h2>See where your friends are</h2>
+    <h2>Put your friends on the map.</h2>
   </header>
   <%= yield %>
 </body>

@@ -1,12 +1,23 @@
+enable :sessions
 # =========================
 # Index
 # =========================
 get '/' do
-  @user = User.find_or_initialize_by(id: session[:user_id])
-  @friends = []
-  @user.friendships.each do |friendship|
-    @friends << Friend.find(friendship.friend_id)
+  p "current session nil?"
+  p current_session.nil?
+  if user_logged_in
+    @user = current_user
+    @friends = []
+    @user.friendships.each do |friendship|
+      @friends << Friend.find_by(id: friendship.friend_id)
+    end
+    p current_session
+    set_session(@user)
+    p current_session
+  else
+    p "nobody logged in"
   end
+  @friends
   erb :index
 end
 
@@ -17,7 +28,7 @@ post '/' do
   @user = User.find_by(id: session[:user_id])
   p "current user is: "
   p @user
-  @friend = User.find_or_initialize_by(name: params[:name])
+  @friend = User.find_or_initialize_by(full_name: params[:name])
   p "new friend is: "
   @friend.update_attributes(location: params[:location])
   p @friend
@@ -27,7 +38,7 @@ post '/' do
       # @friendship = Friendship.create(friend_id: @friend.id, user_id: current_user.id)
       @user.friends << @friend
       p @user.friends
-      {name: @friend.name, location: @friend.location, id: @friend.id}.to_json
+      {full_name: @friend.name, location: @friend.location, id: @friend.id}.to_json
     else
       {error: "Friend did not save"}.to_json
     end
@@ -52,6 +63,10 @@ end
 # Populate Map from User's friends
 # =========================
 get '/locations' do
+  p "in /location, session is: "
+  p session[:user_id]
+  p "current session nil?"
+  p current_session.nil?
   @user = User.find_by(id: session[:user_id])
   @friendships = @user.friendships
   p "friendships: "

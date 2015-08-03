@@ -15,23 +15,27 @@ class User < ActiveRecord::Base
   validates :uid, :oauth_token, uniqueness: true
   validate :provider_must_be_facebook
 
-  def self.from_omniauth(auth)
+  def from_omniauth(auth)
+    puts "in from_omniauth, auth hash is: \n\n #{auth}"
     @user = User.find_or_initialize_by(uid: auth.uid)
     @user.full_name = auth.info.name
     @user.email = auth.info.email
     @user.oauth_token = auth.credentials.token
-    @user.photo_url = auth.info.image + '?height=350&width=250' #put in variable for safety
+    @user.image_url = auth.info.image + '?height=350&width=250'
+    #put in variable for safety
     @user.provider = 'facebook'
+    puts "The user found via OAuth is: "
+    p @user
     @user.save!
 
     # friends who also play the game
-    results = self.get_friends_data_from_omniauth
-    self.create_friendships(results["data"])
-
+    results = get_friends_data_from_omniauth(@user)
+    @user.create_friendships(results["data"], @user)
+    puts "results of get_friends_data_from_omniauth are: \n\n #{results}"
     return @user
   end
 
-private
+# private
 
   def provider_must_be_facebook
     if provider != 'facebook'
@@ -39,11 +43,13 @@ private
     end
   end
 
-  def self.get_friends_data_from_omniauth
+  def get_friends_data_from_omniauth(user)
     HTTParty.get("https://graph.facebook.com/v2.3/#{@user.uid}/friends?access_token=#{@user.oauth_token}")
   end
 
-  def self.create_friendships(friends_data)
+  def create_friendships(friends_data, user)
+    puts "Friends data is: "
+    p friends_data
     friends_data.each do |friend_data|
       uid = friend_data["id"].to_i
       friend = User.find_by(uid: uid)

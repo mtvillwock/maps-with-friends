@@ -1,4 +1,7 @@
 helpers do
+  def auth_hash
+    request.env['omniauth.auth']
+  end
 
   def set_facebook_session
     session['facebook-oauth-state'] = SecureRandom.uuid
@@ -9,12 +12,27 @@ helpers do
     @facebook_session
   end
 
+  def current_session
+    session[:user_id]
+  end
+
+  def set_session(user)
+    session[:user_id] = user.id
+  end
+
   def current_user
-    @user = User.find(session[:user_id]) unless session[:user_id] == nil
+    @user = User.find_by(id: session[:user_id])
+    if @user.nil?
+      p "no user"
+      false
+    else
+      p "Current user is #{@user}"
+      @user
+    end
   end
 
   def user_logged_in
-    true unless session[:user_id] == nil
+    current_user
   end
 
   def get_facebook_app_id
