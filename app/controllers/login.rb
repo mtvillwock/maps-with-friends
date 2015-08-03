@@ -38,7 +38,7 @@ post '/login' do
 end
 
 # =========================
-# Logout
+# Logout (Email/Password)
 # =========================
 delete '/logout' do
   p "in delete route, session is:"

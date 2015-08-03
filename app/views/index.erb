@@ -1,10 +1,11 @@
 <div class="container">
 
-  <% unless user_logged_in %>
+  <% if !current_user %>
   <div>
-    <h3>Please <a href="/register">register</a> or <a href="/login">login</a> to access Maps with Friends.</h3>
+    <!-- <h3>Please <a href="/register">register</a> or <a href="/login">login</a> to access Maps with Friends.</h3> -->
 
     <div class="login-container">
+      Please login with Facebook to use the app.
       <a href="/login-via-facebook">
         <img src="https://app.carehr.com/assets/facebook-login-56a158df50e9439b9515a99d1472fb36.png" id="facebook_button"/>
       </a>
@@ -17,9 +18,10 @@
   <header id="logged-in-nav">
     <h3>Welcome, <%= current_user.full_name %>!</h3>
     <nav class="logout">
-      <form action="/logout" method="post">
+      <!-- <form action="/logout" method="post"> -->
+      <form action="/logout-of-facebook" method="post">
         <input name="_method" type="hidden" value="delete">
-        <button>Log out</button>
+        <input type="submit" value="Log out!">
       </form>
     </nav>
   </header>

@@ -1,8 +1,6 @@
 require 'json'
 require 'httparty'
 
-enable :sessions
-
 get '/login-via-facebook' do
 #   facebook = Facebook.new
 #   state = set_facebook_session
@@ -19,6 +17,12 @@ get '/auth/facebook/callback' do
   session[:user_id] = @user.id
   p "post OAuth, session is #{session[:user_id]}"
   redirect '/'
+end
+
+post '/logout-of-facebook' do
+  app_url = "https://maps-with-friends.herokuapp.com/"
+  access_token = ENV['APP_ID'] + "%7C" + ENV['APP_SECRET']
+  Httparty.post("https://www.facebook.com/logout.php?next=#{app_url}&access_token=#{access_token}")
 end
 
 # get '/oauth2callback' do
