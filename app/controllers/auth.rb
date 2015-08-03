@@ -16,12 +16,8 @@ get '/auth/facebook/callback' do
   user = User.new
   @user = user.from_omniauth(auth_hash)
   p @user
-  p "current session nil?"
-  p current_session.nil?
   session[:user_id] = @user.id
   p "post OAuth, session is #{session[:user_id]}"
-  p "current session nil?"
-  p current_session.nil?
   redirect '/'
 end
 

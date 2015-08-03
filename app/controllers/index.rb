@@ -3,21 +3,16 @@ enable :sessions
 # Index
 # =========================
 get '/' do
-  p "current session nil?"
-  p current_session.nil?
   if user_logged_in
     @user = current_user
     @friends = []
     @user.friendships.each do |friendship|
       @friends << Friend.find_by(id: friendship.friend_id)
     end
-    p current_session
-    set_session(@user)
-    p current_session
+    session[:user_id] = @user.id
   else
     p "nobody logged in"
   end
-  @friends
   erb :index
 end
 
@@ -65,8 +60,6 @@ end
 get '/locations' do
   p "in /location, session is: "
   p session[:user_id]
-  p "current session nil?"
-  p current_session.nil?
   @user = User.find_by(id: session[:user_id])
   @friendships = @user.friendships
   p "friendships: "
