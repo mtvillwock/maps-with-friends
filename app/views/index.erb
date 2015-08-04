@@ -33,6 +33,10 @@
       <% if @friends %>
       <ul>
       <% @friends.each do |friend| %>
+      <% if friend.nil? %>
+      <% next %>
+      <% end %>
+
         <li id="<%= friend.id %>">
           <p>
             <span class='friend-name'><%= friend.name %></span> in

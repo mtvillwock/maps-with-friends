@@ -199,7 +199,7 @@ function populateLocations() {
 
   request.done(function(data){
     for (var i = 0; i < data.length; i++) {
-
+      console.log(data);
       addMarkerFromDatabase(data[i]);
 
       // $("#friend-list").append("</li><p>" + "<span class='friend-name'>" + data[i].name + "</span>" + " in " + "<span class='friend-location'>" + data[i].location + "</span>" + "</p>" + "<button><a class='delete' href='/friend/'" + data.id + "/delete>Delete</a></button></li>"
@@ -208,8 +208,8 @@ function populateLocations() {
     };
   });
 
-  request.error(function(){
-    console.log("errors retrieving or processing data from server");
+  request.error(function(response){
+    console.log("errors retrieving or processing data from server", response);
   });
 }
 
