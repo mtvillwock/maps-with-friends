@@ -1,12 +1,18 @@
 # Maps with Friends
-Status: Feature additions are pending.
+Status: Minimum viable product functional.
 
 A User can:
 - register
 - login
 - have markers display on the map for all of the friends in the database associated with the user
 - add new friend markers to the map
-- See names and locations their friends
+- See names and locations of their friends
+- remove friends from the map
+
+Idea for the future:
+- replace Google Maps with Leaflet.js as speed optimization
+- add file uploads or use Gravatar or another API to search for friend's images/info
+- user profile page
 
 ## Why Maps with Friends?
 Life has a way of scattering friends all over the place.
