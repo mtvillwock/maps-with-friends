@@ -43,7 +43,7 @@ function addNewMarker(e){
     // navigator.geolocation.getCurrentPosition(codeAddress);
     codeAddress(data);
     // Makes the new marker based on address in form submission
-    $("#friend-list").append("<li><p>" + "<span class='friend-name'>" + data.name + "</span>" + " in " + "<span class='friend-location'>" + data.location + "</span>" + "</p>" + "<button><a class='delete' href='/friend/'" + data.id + "/delete>Delete</a></button></li>");
+    $("#friend-list").append("<li id=" + data.id +"><p>" + "<span class='friend-name'>" + data.name + "</span>" + " in " + "<span class='friend-location'>" + data.location + "</span>" + "</p>" + "<button><a class='delete' href=/friend/" + data.id + "</delete>Delete</a></button></li>");
     console.log("form should clear");
     clearFriendForm();
   });
