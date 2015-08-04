@@ -43,7 +43,7 @@ function addNewMarker(e){
     // navigator.geolocation.getCurrentPosition(codeAddress);
     codeAddress(data);
     // Makes the new marker based on address in form submission
-    $("#friend-list").append("<p>" + "<span class='friend-name'>" + data.name + "</span>" + " in " + "<span class='friend-location'>" + data.location + "</span>" + "</p>");
+    $("#friend-list").append("<li><p>" + "<span class='friend-name'>" + data.name + "</span>" + " in " + "<span class='friend-location'>" + data.location + "</span>" + "</p>" + "<button><a class='delete' href='/friend/'" + data.id + "/delete>Delete</a></button></li>");
     console.log("form should clear");
     clearFriendForm();
   });
@@ -199,16 +199,17 @@ function populateLocations() {
 
   request.done(function(data){
     for (var i = 0; i < data.length; i++) {
-
+      console.log(data);
       addMarkerFromDatabase(data[i]);
 
-      $("#friend-list").append("<p>" + "<span class='friend-name'>" + data[i].name + "</span>" + " in " + "<span class='friend-location'>" + data[i].location + "</span>" + "</p>");
+      // $("#friend-list").append("</li><p>" + "<span class='friend-name'>" + data[i].name + "</span>" + " in " + "<span class='friend-location'>" + data[i].location + "</span>" + "</p>" + "<button><a class='delete' href='/friend/'" + data.id + "/delete>Delete</a></button></li>"
+        // );
 
     };
   });
 
-  request.error(function(){
-    console.log("errors retrieving or processing data from server");
+  request.error(function(response){
+    console.log("errors retrieving or processing data from server", response);
   });
 }
 

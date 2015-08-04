@@ -33,9 +33,16 @@
       <% if @friends %>
       <ul>
       <% @friends.each do |friend| %>
+      <% if friend.nil? %>
+      <% next %>
+      <% end %>
+
         <li id="<%= friend.id %>">
-           <%= friend.name %>
-           <button ><a class="delete" href="/friend/<%= friend.id %>/delete">
+          <p>
+            <span class='friend-name'><%= friend.name %></span> in
+            <span class='friend-location'><%= friend.location %></span>
+          </p>
+           <button><a class="delete" href="/friend/<%= friend.id %>/delete">
           Delete</a></button>
            </li>
           <% end %>

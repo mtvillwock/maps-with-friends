@@ -5,7 +5,11 @@ get '/' do
   @user = User.find_or_initialize_by(id: session[:user_id])
   @friends = []
   @user.friendships.each do |friendship|
-    @friends << Friend.find(friendship.friend_id)
+    if friendship.nil?
+      next
+    else
+      @friends << Friend.where(id: friendship.friend_id).first
+    end
   end
   erb :index
 end
@@ -35,6 +39,10 @@ end
 
 delete '/friends/:id/delete' do
   @friend = Friend.find(params[:id])
+  @friendships = Friendship.where(friend_id: @friend.id)
+  @friendships.each do |friendship|
+    friendship.delete
+  end
   content_type :json
   if @friend.delete
     { id: params[:id] }.to_json
@@ -51,15 +59,12 @@ get '/locations' do
   @friendships = @user.friendships
   @friends = []
   @friendships.each do |friendship|
+    if friendship.nil?
+      next
+    end
     @friends << Friend.find_by(id: friendship.friend_id)
   end
-  p @friends.each { |f| f.name }
   content_type :json
-  # @friends.each do |friend|
-  #   friend = {name: friend.name, location: friend.location}
-  #   friends_and_locations << friend
-  # end
-  # friends_and_locations.to_json
   @friends.to_json
 end
 
@@ -73,11 +78,11 @@ end
 
 post '/register' do
   user = User.new(params[:user])
-    if user.save
-      redirect '/login'
-    else
-      erb :register
-    end
+  if user.save
+    redirect '/login'
+  else
+    erb :register
+  end
 end
 
 # =========================
