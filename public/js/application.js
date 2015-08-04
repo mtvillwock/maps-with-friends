@@ -60,6 +60,13 @@ function deleteFriend(e) {
   });
 
   request.done(function(data) {
+    // find marker in dictionary of markers and object data
+    marker = markers[Number(data.id)]["marker"];
+    // remove the marker from the map
+    marker.setMap(null);
+    // delete the marker from the dictionary
+    delete markers[data.id];
+    // remove the friend from the DOM
     friend.remove();
   })
 }
@@ -167,6 +174,7 @@ var geoCode = function(data) {
     }
 
     markers[data.id] = { "marker": marker, "data": data };
+    console.log(markers);
 
 // future iterations plan to include more user info from user profile page
     var content = "<div class='infowindow'><img src='../placeholder.png'><p>" + data.name +"</p></div>"
