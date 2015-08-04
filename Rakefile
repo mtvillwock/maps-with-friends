@@ -7,6 +7,16 @@ require ::File.expand_path('../config/environment', __FILE__)
 # Include all of ActiveSupport's core class extensions, e.g., String#camelize
 require 'active_support/core_ext'
 
+begin
+  require "rspec/core/rake_task"
+  desc "Run all examples"
+  RSpec::Core::RakeTask.new(:spec) do |t|
+    t.rspec_opts = %w[--color]
+    t.pattern = 'spec/**/*_spec.rb'
+  end
+rescue LoadError
+end
+
 namespace :generate do
   desc "Create an empty model in app/models, e.g., rake generate:model NAME=User"
   task :model do
@@ -25,9 +35,9 @@ namespace :generate do
     puts "Creating #{model_path}"
     File.open(model_path, 'w+') do |f|
       f.write(<<-EOF.strip_heredoc)
-        class #{model_name} < ActiveRecord::Base
-          # Remember to create a migration!
-        end
+      class #{model_name} < ActiveRecord::Base
+        # Remember to create a migration!
+      end
       EOF
     end
   end
@@ -49,10 +59,10 @@ namespace :generate do
     puts "Creating #{path}"
     File.open(path, 'w+') do |f|
       f.write(<<-EOF.strip_heredoc)
-        class #{name} < ActiveRecord::Migration
-          def change
-          end
+      class #{name} < ActiveRecord::Migration
+        def change
         end
+      end
       EOF
     end
   end
@@ -74,14 +84,14 @@ namespace :generate do
     puts "Creating #{path}"
     File.open(path, 'w+') do |f|
       f.write(<<-EOF.strip_heredoc)
-        require 'spec_helper'
+      require 'spec_helper'
 
-        describe #{name} do
-          pending "add some examples to (or delete) #{__FILE__}"
-        end
-      EOF
+      describe #{name} do
+      pending "add some examples to (or delete) #{__FILE__}"
     end
+    EOF
   end
+end
 
 end
 

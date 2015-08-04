@@ -16,6 +16,7 @@ gem 'activesupport'
 gem 'activerecord'
 
 gem 'rake'
+gem 'rspec'
 
 gem 'bcrypt'
 
@@ -30,7 +31,6 @@ group :test do
 end
 
 group :test, :development do
-  gem 'rspec'
   gem 'factory_girl'
   gem 'faker'
 end
