@@ -25,7 +25,6 @@ post '/' do
     content_type :json
     if @friend.save
       @friendship = Friendship.create(friend_id: @friend.id, user_id: current_user.id)
-      # Try @friendship = @user.friendships.create(params[:friendship])
       {name: @friend.name, location: @friend.location, id: @friend.id}.to_json
     else
       {error: "Friend did not save"}.to_json

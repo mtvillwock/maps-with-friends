@@ -1,5 +1,6 @@
 class Friend < ActiveRecord::Base
-  has_and_belongs_to_many :friendships, dependent: :destroy
+  has_many :friendships, dependent: :destroy
+  has_many :users, through: :friendships
 
   validates_presence_of :name
   validates_uniqueness_of :name

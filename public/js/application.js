@@ -2,6 +2,8 @@ $(document).ready(function() {
   var map; // declaring map globally for later
   var infowindow; // declaring globally for later
   var marker; // declaring globally for later
+  // JS object to hold references to future markers that are generated
+  var markers;
   navigator.geolocation.getCurrentPosition(initialize);
   // finds user's current position and creates map and marker showing them
   $('.search-form').on('submit', function(e){
@@ -11,11 +13,10 @@ $(document).ready(function() {
   $('#friend-list').on('click', ".delete", function(e) {
     deleteFriend(e);
   });
-
-  // click listener for info window
 });
 
 function initialize(location) {
+  markers = {};
   // Create the map
   createMapWithUserMarker(location);
   // Initialize autocomplete form
@@ -38,11 +39,8 @@ function addNewMarker(e){
   });
 
   request.done(function(data){
-    console.log("in addNewMarker done callback")
-    console.log(data);
-    // navigator.geolocation.getCurrentPosition(codeAddress);
-    codeAddress(data);
     // Makes the new marker based on address in form submission
+    codeAddress(data);
     $("#friend-list").append("<li id=" + data.id +"><p>" + "<span class='friend-name'>" + data.name + "</span>" + " in " + "<span class='friend-location'>" + data.location + "</span>" + "</p>"
       + "<button><a class='delete' href=" + "/friend/" + data.id + " /delete>Delete</a></button></li>");
     console.log("form should clear");
@@ -55,9 +53,6 @@ function deleteFriend(e) {
 
   var id = e.target.closest('li').id;
   var friend = e.target.closest('li');
-  console.log(id);
-  console.log(friend);
-
 
   var request = $.ajax({
     type: 'delete',
@@ -65,7 +60,13 @@ function deleteFriend(e) {
   });
 
   request.done(function(data) {
-    console.log("in done function")
+    // find marker in dictionary of markers and object data
+    marker = markers[Number(data.id)]["marker"];
+    // remove the marker from the map
+    marker.setMap(null);
+    // delete the marker from the dictionary
+    delete markers[data.id];
+    // remove the friend from the DOM
     friend.remove();
   })
 }
@@ -98,7 +99,7 @@ function createMapWithUserMarker(location){
   });
 
   var infowindow = new google.maps.InfoWindow({
-    content: "Hey Username!" // Add user information here
+    content: "You are here!"
   });
 
   google.maps.event.addListener(marker, 'click', function() {
@@ -147,22 +148,17 @@ function setUpAutocompleteForm(){
 
 // Used in addNewMarker AJAX call
 var codeAddress = function(data) {
-  // var address = document.getElementById("address").value;
-  // console.log(address)
-  console.log("in codeAddress before geoCode")
-  console.log(data)
   geoCode(data);
 }
 
 // Used in populateLocations AJAX call
 var addMarkerFromDatabase = function(data) {
-  console.log("in addMarkerFromDatabase before geoCode")
   geoCode(data);
 }
 
 // Finds LatLong of provided address and makes a marker at that location
 var geoCode = function(data) {
-  console.log("in geoCode")
+  console.log("in geocode, data is:");
   console.log(data);
   var geocoder = new google.maps.Geocoder();
   geocoder.geocode( { 'address': data.location }, function(results, status) {
@@ -174,14 +170,18 @@ var geoCode = function(data) {
         title: data.name
       });
     } else {
-      alert("Geocode was not successful for the following reason: " + status);
+      console.log("Geocode was not successful for the following reason: " + status);
     }
 
-    var infowindow = new google.maps.InfoWindow({
-      // content: data.name // Add user info with HTML action
-      content: "<div class='infowindow'><img src='../placeholder.png'><p>" + data.name +"</p></div>"
-    });
+    markers[data.id] = { "marker": marker, "data": data };
+    console.log(markers);
 
+// future iterations plan to include more user info from user profile page
+    var content = "<div class='infowindow'><img src='../placeholder.png'><p>" + data.name +"</p></div>"
+    var infowindow = new google.maps.InfoWindow({
+      content: content
+    });
+// Adds listener to open the marker's info window
     google.maps.event.addListener(marker, 'click', function() {
       infowindow.open(map,marker);
       setTimeout(function() {
@@ -202,10 +202,6 @@ function populateLocations() {
     for (var i = 0; i < data.length; i++) {
       console.log(data);
       addMarkerFromDatabase(data[i]);
-
-      // $("#friend-list").append("</li><p>" + "<span class='friend-name'>" + data[i].name + "</span>" + " in " + "<span class='friend-location'>" + data[i].location + "</span>" + "</p>" + "<button><a class='delete' href='/friend/'" + data.id + "/delete>Delete</a></button></li>"
-        // );
-
     };
   });
 
@@ -213,27 +209,3 @@ function populateLocations() {
     console.log("errors retrieving or processing data from server", response);
   });
 }
-
-// makes an infowindow
-// function createInfoWindow(data) {
-//   var infoToDisplay = data.name + " in " + data.location
-//   infoWindowOptions = {
-//     content: infoToDisplay
-//   }
-//   var infowindow = new google.maps.InfoWindow(infoWindowOptions)
-//   return infowindow
-// }
-
-// adds listener to marker
-// function addInfoWindowListener(marker, infowindow) {
-//   var marker = marker
-//   console.log(marker); // undefined
-//   google.maps.event.addListener(map, 'click', function() {
-//     showInfoWindow(infowindow, marker);
-//   });
-// }
-
-// // calls infowindow.open
-// function showInfoWindow(infowindow, marker) {
-//   infowindow.open(map,marker);
-// }
