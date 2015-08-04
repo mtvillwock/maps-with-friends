@@ -34,8 +34,11 @@
       <ul>
       <% @friends.each do |friend| %>
         <li id="<%= friend.id %>">
-           <%= friend.name %>
-           <button ><a class="delete" href="/friend/<%= friend.id %>/delete">
+          <p>
+            <span class='friend-name'><%= friend.name %></span> in
+            <span class='friend-location'><%= friend.location %></span>
+          </p>
+           <button><a class="delete" href="/friend/<%= friend.id %>/delete">
           Delete</a></button>
            </li>
           <% end %>
