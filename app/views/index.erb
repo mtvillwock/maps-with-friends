@@ -1,59 +1,91 @@
-<div class="container">
-
-  <% unless user_logged_in %>
-  <div>
-    <h3>Please <a href="/register">register</a> or <a href="/login">login</a> to access Maps with Friends.</h3>
-  </div>
-  <% end %>
-
-  <% if current_user %>
-
-  <header id="logged-in-nav">
-    <h3>Welcome, <%= current_user.username %>!</h3>
-    <nav class="logout">
-      <form action="/logout" method="post">
-        <input name="_method" type="hidden" value="delete">
-        <button>Log out</button>
-      </form>
-    </nav>
+<div class="main container">
+  <header class="row" id="header">
+    <div class="six columns">
+      <h1 class="site-title">
+        <a href="/">Maps with Friends</a>
+      </h1>
+      <h2 class="subtitle">See where your friends are</h2>
+    </div>
+    <% if current_user %>
+      <div
+        class="offset-by-two four columns"
+        id="logged-in-nav container">
+        <nav class="logout">
+          <h4>Hi, <%= current_user.username %>!</h4>
+          <div>
+            <form action="/logout" method="post">
+              <input name="_method" type="hidden" value="delete">
+              <button>Log out</button>
+            </form>
+          </div>
+        </nav>
+      </div>
+    <% end %>
   </header>
 
-  <div class="one-third column">
-    <div class="search-form">
-      <p>Enter your friend's name and city to add their location on the map.</p>
-      <form action="/" method="post">
-        <input class="friend" name="name" type="text" placeholder="Your friend's name">
-        <input id="address" class="controls" name="location" type="text" placeholder="Your friend's city">
-        <button id="add-marker">Add map marker</button>
-      </form>
+  <% if current_user %>
+    <div class="row">
+      <div class="twelve columns">
+        <div class="search-form">
+          <p>Enter your friend's name and city to add their location on the map.</p>
+          <form action="/" method="post">
+            <input class="friend" name="name" type="text" placeholder="Your friend's name">
+            <input id="address" class="controls" name="location" type="text" placeholder="Your friend's city">
+            <button id="add-marker">Add map marker</button>
+          </form>
+        </div>
+      </div>
     </div>
-
-    <div id="friend-list">
-      <h3>Friends List:</h3>
-      <% if @friends %>
-      <ul>
-      <% @friends.each do |friend| %>
-      <% if friend.nil? %>
-      <% next %>
-      <% end %>
-
-        <li id="<%= friend.id %>">
-          <p>
-            <span class='friend-name'><%= friend.name %></span> in
-            <span class='friend-location'><%= friend.location %></span>
-          </p>
-           <button><a class="delete" href="/friend/<%= friend.id %>/delete">
-          Delete</a></button>
-           </li>
-          <% end %>
-      </ul>
-      <% end %>
+    <!-- Second row -->
+    <div class="row">
+      <!-- Map -->
+      <div class="seven columns">
+        <div id="map-canvas"></div>
+      </div>
+      <!-- Friends column -->
+      <div class="four columns friend-list-wrapper">
+        <h3>Friends List:</h3>
+        <% if @friends %>
+          <ul class="friend-list" id="friend-list">
+            <% @friends.each do |friend| %>
+              <% if friend.nil? %>
+              <% next %>
+              <% end %>
+              <li class="row" id="<%= friend.id %>">
+                <div class="seven columns">
+                  <div class="friend-info">
+                    <p>
+                      <span class='friend-name'>
+                        <%= friend.name %>
+                      </span>
+                      <span class='friend-location'>
+                        <%= friend.location %>
+                      </span>
+                    </p>
+                  </div>
+                </div>
+                <div class="five columns">
+                  <div class="delete-friend-wrapper">
+                    <button class="delete-friend">
+                      <a
+                        class="delete"
+                        href="/friend/<%= friend.id %>/delete">
+                        Delete
+                      </a>
+                    </button>
+                  </div>
+                </div>
+              </li>
+            <% end %>
+          </ul>
+        <% end %>
+      </div>
     </div>
-  </div>
-
-  <div class="six columns">
-    <div id="map-canvas"></div>
-  </div>
-
+  <% else %>
+    <div>
+      <h3>
+        Please <a href="/register">register</a> or <a href="/login">login</a> to access Maps with Friends.
+      </h3>
+    </div>
   <% end %>
 </div>

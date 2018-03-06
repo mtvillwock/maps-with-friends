@@ -1,7 +1,3 @@
-html, body {
-  background-color: #d1e5e1;
-}
-
 body a {
   text-decoration: none;
 }
@@ -12,12 +8,17 @@ body a {
   text-align: center;
 }
 
-#header h1 {
+.site-title {
   font-size: 3em;
+  line-height: 1em;
+  padding: 10px;
+  margin: 0;
 }
 
-#header h2 {
+.subtitle {
   font-size: 1.5em;
+  line-height: 1em;
+  margin: 0;
 }
 
 #header a {
@@ -25,27 +26,25 @@ body a {
   text-decoration: none;
 }
 
+.main {
+  background-color: #d1e5e1;
+}
 
 .container {
   margin: 20px auto;
   width: 85%;
-  padding: 0px 20px 20px 20px;
   text-align: center;
 }
-
 
 #map-canvas {
   border-style: outset;
   height: 450px;
-  margin: auto;
-  padding: 0;
-  width: 450px;
+  max-width: 900px;
+  margin-left: 50px;
 }
 
 .search-form {
-  background-color: #d1e5e1;
   margin: 2% auto;
-  width: 300px;
 }
 
 #add-marker {
@@ -53,28 +52,55 @@ body a {
   color: white;
 }
 
+.friend-list-wrapper {
+  background-color: white;
+  padding: 10px;
+  margin: 0 20px 20px 50px;
+}
 
-#friend-list {
+.friend-list {
   list-style-type: none;
+}
+
+.friend-info {
+  padding: 0;
 }
 
 .friend-name {
   font-weight: bold;
+  display: block;
 }
 
 .friend-location {
   font-style: italic;
+  display: block;
+}
+
+.delete-friend-wrapper {
+  padding-top: 5px;
+}
+
+.row .delete-friend {
+  background-color: maroon !important;
+}
+
+.row .delete-friend .delete {
+  color: white !important;
 }
 
 #logged-in-nav {
+  background-color: white;
   text-align: center;
   margin: auto;
 }
 
+.logout {
+  padding: 10px 40px 0px 40px;
+}
+
 .logout button{
-  background-color: #0d355a;
+  background-color: red;
   color: white;
-  float: right;
   margin-right: 2%;
 }
 
